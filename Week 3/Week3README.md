@@ -12,6 +12,8 @@ While util is broad, there's a few key parts that you should be familiar with be
 
 ### Orientation 
 
+![Pitch Roll Yaw Diagram](Assets/Pitch%20Roll%20and%20Yaw.jpg)
+
 When it comes to orientation, you should already be familiar with one half of it: the IMU. The IMU is responsible for estimating the pitch and yaw of the robot's head, and its complement is the encoder, which estimates yaw for the chassis. Although it may seem redundant to measure yaw from both the head and the chassis, the reason is that the head needs to be able to operate fully independently of the chassis, since during our competetion, we often beyblade to make our armor panels harder to hit. 
 
 TODO: Include gif of beyblade
@@ -70,32 +72,49 @@ The constructor for the class is as follows:
 
 ```C++
 DJIMotor(short motorID, CANHandler::CANBus canBus, motorType type, const std::string& name);
-
 ```
 
+For instance, if we wanted to create a back-left M3508 named LB, with ID 2 on canbus 1, we would have the following:
 
+```C++
+DJIMotor LB(2, CANBUS_1, M3508, "LeftBack");
+```
 
+Once you've created the motor object, there's 3 different ways to set some output.
 
+``` C++
+setPower(int Power); // M3508 and M2006 range from +/- 16384, GM6020 is +/- 32767 
+setSpeed(int RPM); 
+setPosition(int ticks); // The motors encode 360 degrees as 8192 ticks, so each tick is roughly 0.044 degrees.
+```
 
+You should be aware that while setPower is just a raw current input (ranging from -20A to 20A), setSpeed and setPosition rely on a PID. While the details of PID will be explained more in the next week, a simple definition is that its a tuning algorithm that we run in software to standardize the outputs of each motor, since each individual motor has small differences that we have to account for. For example, one M3508 might run at 10 RPM from 1A, whereas another might run at 11RPM from 1A, and so each motor's PID accounts for that and standardizes them. 
 
-Additionally, you can grab the following data from a motor. In this case, let's say we have a motor named LB (left-back). 
+Also, once you've set the proper output, you send it with `s_sendValues();`.
 
-`LB.getData(ANGLE)` Returns angle in ticks with rollover (i.e. resets after a 360). Note that there are 8192 ticks in a 360, so each tick is roughly 0.044 degrees.
+### Motor Debugging
+
+While you likely won't need this for the assignment, you should be familiar with testing and debugging motors, since it comes up fairly frequently. Here are the relevant functions. 
+
+`LB.getData(ANGLE)` Returns angle in ticks with rollover (i.e. resets after a 360).
 
 `indexer.getData(MULTITURNANGLE)` Returns angle without rollover. 
 
 `LB.getData(VELOCITY)` Returns angular velocity in RPM.
 
-`LB.getData(TORQUE)` Returns torque counts, don't worry about this for now.
+`LB.getData(TORQUE)` Returns torque counts, which can be converted to Newton-meters w/ a constant (don't worry about this for now)
 
 `LB.getData(TEMPERATURE)` Temp in C.
 
+`indexer.getData(POWEROUT)` Returns the power you're sending out to the motor.
 
-`indexer.getData(POWEROUT)`
+## Motor Assignment 
+
+Since that was a fairly dense section, we figured its best if you get started on writing your motor objects now before we get into Chassis and drive logic. Start by going into the assignment, and creating 4 motor objects. Name them as RF,RB,LF,LB. 
 
 ## Subsystems
 
-While there are a number of files in the subsystems folder, it all boils down to two things: chassis logic and turret logic. 
+While there are a number of files in the subsystems folder, it all boils down to two things: chassis logic and turret logic. Let's begin with Chassis logic 
 
 The chassis side
 
