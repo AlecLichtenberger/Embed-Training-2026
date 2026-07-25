@@ -36,6 +36,27 @@ Also, this should go without saying, but you should turn off the controller when
 
 Lastly, we'll repeat this warning later, but **be careful when using the controller. Make sure your lead is present at all times as a safety percaution.**
 
+## Controller Logic in main
+
+Now that you have a good understanding of the controller, it's a good time to start adding some of the controller logic into baserobot (**mini-repo/BaseRobot/**)
+
+In remote read(), under //Driving input, let jx and jy be the left joystick's x-axis reading and y-axis reading respectively. These readings can be obtained from 
+
+```C++
+remote_.getJoystickValue(DJIRemote2::Joystick::LEFT_HORIZONTAL); //LEFT_VERTICAL for y-axis
+```
+
+From there, you should do the same for jyaw and jpitch (right stick x and y axis respectively), and then **restrict all j-variables to the interval [-1,1]** (HINT: Use max and min functions).  
+
+Once you're done with that, head to the periodic function in main **TODO: ADD THE LINK**, and add the proper drive mode states under //Chassis Logic. For now, just create the states and make them conditional on the remote center switch state (C N S), you don't have to worry about logic yet. However, keep in mind that the robot by default should be in a neutral state, and the C state also should lead to some neutral state. Also, make the N state `ROBOT_ORIENTED` and S state `YAW_ORIENTED`. Note that for this week we will only be using robot_oriented controls, yaw oriented is what you will be implementing in week 5. 
+
+You can check the switch state as shown below. 
+
+```C++
+remote_.getMode() == DJIRemote2::ModeSwitch::MODE_C; // MODE_N for N, MODE_S for S
+```
+
+
 ## Motors 
 
 While we've been skimming over the parts of util, **the motors are integral to your assignment this week.**
@@ -110,11 +131,35 @@ While you likely won't need this for the assignment, you should be familiar with
 
 ## Motor Assignment 
 
-Since that was a fairly dense section, we figured its best if you get started on writing your motor objects now before we get into Chassis and drive logic. Start by going into the assignment, and creating 4 motor objects. Name them as RF,RB,LF,LB. 
+Given last weeks assignment, we trust that you understand and can reliably use constructors, so we're going to skip ahead to actually using the DJI motor class. What we want you to do is head to ChassisSubsystem.cpp (mini-repo/core/subsystems), and implement the setWheelSpeeds function. Make sure to set the desiredWheelSpeeds class variable to wheel speeds, and then for now set each motor's speed directly through setSpeed(). 
 
-## Subsystems
+## Chassis Subsystem
 
-While there are a number of files in the subsystems folder, it all boils down to two things: chassis logic and turret logic. Let's begin with Chassis logic 
+While there are a number of files in the subsystems folder, it all boils down to two things: chassis logic and turret logic. However, before we can start thinking about the logic, we have to first understand our mechanical design. 
 
-The chassis side
+To start with, the wheels we use are mecanum wheels that allow for omnidirectional movement (forward, backward, left, and right).
+
+<img src="Assets/Mecanum Wheels.png" width="300"> <img src="Assets/omni.png" width="300">
+
+These wheels are placed in a X pattern, so that we also have the ability to rotate the robot clockwise and counterclockwise. Assume that all positive values will result in clockwise rotation, and conversely all negative results in counterclockwise rotation. From this you should be able to figure out what combination of positive and negative motor inputs should result in forward, backward, left and right movement. (Hint: Draw out a diagram and take the sum of the velocity vectors of each wheel). 
+
+Once you feel comfortable in understanding how the driving logic works, head to main (TODO: add the location when mini-repo is real), and assign `des_chassis_state.vX` and `des_chassis_state.vY` to `max_linear_vel * jY` and `max_linear_vel * jX` respectively (note: vX = constant*jY is indeed counter-intuitive but that's just our convention).  
+
+Then, implement your driving logic under //Chassis Logic, remember that mode N should correspond to `ROBOT-ORIENTED`. 
+
+Hint: Use this function from Chassis subsystem 
+
+```C++
+float ChassisSubsystem::setChassisSpeeds(ChassisSpeeds desiredChassisSpeeds_, DRIVE_MODE mode)
+```
+
+## Turret Subsystem
+
+Now that we have our basic Chassis subsystem done, let's start taking a look at our turret logic. The good news is that it's relatively analagous to our previous work with the chassis, except fortunately for us, its actually simpler. 
+
+At this point I would like to challenge you to read the header file for the turret subsystem, and try to piece together and understand how it should function (and I also challenge you to find the file yourself, I believe in you). As a member, you'll often have to go through other people's code, and try to decipher how it works, since while I can always explain it to you if you ask, it's obviously beneficial to be able to problem-solve for yourself. 
+
+Once you've read through the header, try going through the .cpp and fixing all the TODOs. It's not uncommon for you as a member to be told to fix the issues in a particular file where I've gone through and added "TODO" comments throughout. During this process, you are bound to get stuck. In fact, it is my goal to make you get stuck here, and ask for help, because that is the reality of embed. However, my goal is not to demoralize you or make you frustated, rather I want you to become more comfortable asking for help and collaborating with a lead or TA through an issue, since that has been how I have personally learned a lot of the codebase. Also, don't be afraid to contact your fellow recruits during this process either, you will eventually be partnered into a capstone, and so reach out and work together. As a final note before I resume, it's not the end of the world if you make a mistake here, the point is to make mistakes and learn from them. 
+
+Once you have fixed the TODOs in the .cpp file, add your logic to the drive states you have in the main periodic function. Consider when you want the turret sleeping and when you want it active. Additionally, above (TODO: Add this part after we add main) complete the TODO for yaw_desired_angle and pitch desired angle. 
 

@@ -85,12 +85,9 @@ For completeness, here's a simple wiring diagram for CAN. Be aware that red is f
 
 ![CAN Wiring Diagram](Assets/week2%20CAN%20wiring%20diagram.png)
 
-
 # Assignment: Implementing BNO055 IMU
 
-Your assignment for this week is implementing a simple driver for the BNO055 IMU. This driver should be able to initalize the BNO055, and grab XYZ acceleration and gyro data. Once you're able to do that, make sure you set the BNO055 to 9DOF mode, and then start grabbing the pitch, roll, and yaw from it as well. 
-
-**Once you're done, copy your assignment code into the BNO055 files in the core.** They're located in core/util/peripherals/imu
+Your assignment for this week is implementing a simple driver for the BNO055 IMU. The header and implementation files are located in **mini-repo/core/util/peripherals/imu**. Make sure you implement all the functions we have provided in the header, and feel free to add your own functions as needed. This driver should be able to initalize the BNO055, and grab XYZ acceleration and gyro data. Once you're able to do that, make sure you set the BNO055 to 9DOF mode, and then start grabbing the pitch, roll, and yaw from it as well. 
 
 To help you, here's a [link](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf) to the datasheet (HINT: Start by looking for the relevant registers, and also find the constants to convert accel and gyro register readings into real units), and we'll explain some of the relevant i2c functions below. 
 
@@ -104,4 +101,4 @@ Note that in order to properly read a register, you first have to write out that
 
 [TODO: ADD EXAMPLE]
 
-If there's anything you're confused about, please ping us before you ask Claude or your LLM of choice. We were all recruits once, are happy to help in any way we can. 
+If there's anything you're confused about, please ping us before you ask Claude or your LLM of choice. We were all recruits once, and are happy to help in any way we can. 

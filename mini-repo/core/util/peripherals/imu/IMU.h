@@ -1,0 +1,27 @@
+#pragma once
+
+#include "mbed.h"
+
+class IMU:
+{
+public:
+    struct EulerAngles
+    {
+        float yaw;
+        float pitch;
+        float roll;
+    };
+
+    struct Quaternion
+    {
+        float w; // Scalar
+        float x;
+        float y;
+        float z;
+    };
+
+    void init();
+    virtual EulerAngles read();
+    virtual EulerAngles getImuAngles();
+    void reset();
+};
