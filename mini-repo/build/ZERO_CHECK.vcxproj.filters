@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\VS Code\TR\TR Training\Embed-Training-2026\mini-repo\build\CMakeFiles\9db7e497810560f69219cd816145fb16\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{8DFC533C-7028-3DBD-A9E3-0CDB13CB7533}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

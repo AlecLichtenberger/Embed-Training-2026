@@ -1,0 +1,10 @@
+^D:\VS CODE\TR\TR TRAINING\EMBED-TRAINING-2026\MINI-REPO\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SD:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo" "-BD:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build" --check-stamp-file "D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

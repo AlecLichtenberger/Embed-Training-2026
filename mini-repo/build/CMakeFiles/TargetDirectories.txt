@@ -1,0 +1,4 @@
+D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/self_check.dir
+D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/infantry_check.dir
+D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/ALL_BUILD.dir
+D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/ZERO_CHECK.dir

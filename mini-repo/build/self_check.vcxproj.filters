@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\VS Code\TR\TR Training\Embed-Training-2026\mini-repo\robots\Infantry\self_check.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\VS Code\TR\TR Training\Embed-Training-2026\mini-repo\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{64C1B86F-6E89-3BB3-B160-E2BA8547CBE6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
