@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 project(training_compile_check CXX)
 
+# Keep generated binaries and archives inside the build tree so the source
+# repository stays cleaner and IDE/VS-style side outputs do not leak into the
+# repository root.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -24,11 +31,8 @@ include_directories(${CMAKE_SOURCE_DIR}/mbed-os)
 # 2) Project-root include path so repo-relative includes like
 #    "base_robot/BaseRobot.h" and "util/..." resolve correctly.
 include_directories(${CMAKE_SOURCE_DIR})
-
-# 3) Real, unmodified project headers for whatever the trainee is
-#    implementing against (ChassisSubsystem.h, PID.h, DJIMotor.h, ...).
-#    Copy these in from your real repo as-is -- do NOT mock these, only the
-#    hardware leaf headers in mock_mbed/ need faking.
+include_directories(${CMAKE_SOURCE_DIR}/mbed-os/drivers)
+include_directories(${CMAKE_SOURCE_DIR}/core/subsystems)
 include_directories(${CMAKE_SOURCE_DIR}/core)
 include_directories(${CMAKE_SOURCE_DIR}/base_robot)
 include_directories(${CMAKE_SOURCE_DIR}/robots)

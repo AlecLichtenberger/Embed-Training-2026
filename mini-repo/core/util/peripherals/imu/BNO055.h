@@ -62,3 +62,4 @@ private:
     IMU::EulerAngles imuAngles;
 
 };
+#endif

@@ -37,6 +37,29 @@
 
 using namespace std::chrono_literals; // so `100ms` literals work, as they do via real mbed.h
 
+namespace mbed {
+
+class Timer {
+public:
+    void start() {}
+    void stop() {}
+    void reset() {}
+    std::chrono::microseconds elapsed_time() const { return std::chrono::microseconds(0); }
+};
+
+class InterruptIn {
+public:
+    explicit InterruptIn(PinName) {}
+    int read() const { return 0; }
+    operator int() const { return read(); }
+    template <typename Func>
+    void rise(Func /*func*/) {}
+    template <typename Func>
+    void fall(Func /*func*/) {}
+};
+
+} // namespace mbed
+
 // ---- I2C ----------------------------------------------------------------
 // Real signature: mbed I2C read/write take (address, data, length, repeated)
 class I2C {

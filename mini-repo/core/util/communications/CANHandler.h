@@ -13,6 +13,7 @@
 #include "CANMsg.h"
 #include <cstdint>
 #include <vector>
+#include <functional>
 
 
 #define CAN_BAUD 1000000
@@ -36,7 +37,7 @@ class CANHandler{
         CANMsg rxMsg; //Message object reused to recieve messages from motors
         
         public:
-        CAN can;
+        mbed::CAN can;
         
         // callback lists
         std::vector<ExactCallback> exact_;

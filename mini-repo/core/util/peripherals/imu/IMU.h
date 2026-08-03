@@ -2,7 +2,7 @@
 
 #include "mbed.h"
 
-class IMU:
+class IMU
 {
 public:
     struct EulerAngles

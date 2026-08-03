@@ -53,8 +53,8 @@ protected:
     void rise();
     void fall();
     
-    InterruptIn _p;
-    Timer _t;
+    mbed::InterruptIn _p;
+    mbed::Timer _t;
     float _pulsewidth, _period;
     bool _invert;
 };

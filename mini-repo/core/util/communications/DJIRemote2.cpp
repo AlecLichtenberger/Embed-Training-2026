@@ -95,7 +95,7 @@ DJIRemote2::DJIRemote2(PinName tx, PinName rx, int baud)
       currentFrameTimeUs_(0),
       framePeriodUs_(0)
 {
-    serial_.set_blocking(false);
+    // serial_.set_blocking(false);
     std::memset(streamBuffer_, 0, sizeof(streamBuffer_));
 }
 

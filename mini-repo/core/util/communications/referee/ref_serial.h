@@ -46,10 +46,10 @@ public:
     bool is_aligned = false;
 private:
     BufferedSerial ref;
-    Mutex mutex_write_;
-    Mutex mutex_read_;
-    Thread readThread_;
-    Thread writeThread_;
+    // Mutex mutex_write_;
+    // Mutex mutex_read_;
+    // Thread readThread_;
+    // Thread writeThread_;
     bool enablePrintRefData = 0;
 
     uint8_t JudgeSystem_rxBuff_priv[JUDGESYSTEM_PACKSIZE];

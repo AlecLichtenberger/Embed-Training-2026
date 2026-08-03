@@ -1,0 +1,14 @@
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.dir/
+CMakeFiles/
+CMakeCache.txt
+CMakeFiles/generate.stamp
+CMakeScripts/
+Debug/
+Release/
+build/
+out/
+compile_commands.json

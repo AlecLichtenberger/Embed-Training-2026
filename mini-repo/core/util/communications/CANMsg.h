@@ -10,7 +10,7 @@
  * See Wiki page <https://developer.mbed.org/users/hudakz/code/CAN_Hello/> for demo.
  */
  
-// #include "CAN.h"
+#include "CAN.h"
  
 class CANMsg : public mbed::CANMessage
 {

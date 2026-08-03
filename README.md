@@ -24,3 +24,8 @@ Notes:
 Get some C++ compiler (Figure out how it differs on other platforms)
 
 Get Cmake and add to path https://cmake.org/download/https://cmake.org/download/
+
+Run 
+```
+winget install GnuWin32.Make
+```

@@ -124,7 +124,7 @@ public:
         return mode;
     }
 
-    __attribute__((unused)) inline bool isConnected() const {
+    [[maybe_unused]] inline bool isConnected() const {
         return us_ticker_read() / 1000 - timeOfLastFeedback <= TIMEOUT_MS;
     }
 
