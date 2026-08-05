@@ -91,14 +91,27 @@ Your assignment for this week is implementing a simple driver for the BNO055 IMU
 
 To help you, here's a [link](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf) to the datasheet (HINT: Start by looking for the relevant registers, and also find the constants to convert accel and gyro register readings into real units), and we'll explain some of the relevant i2c functions below. 
 
-[TODO: Add a section on device tree when we get that up and running]
+Also, here's some relevant i2c functions that you should know for this assignment. 
 
-The i2c write function (i2c_write_dt) and read function (i2c_read_dt) take in a pointer to the device, an array you want to write, and the # of bytes you're writing out. So for example, let's say 
+``` C++
+i2c.frequency(x); // Sets the frequency to whatever int x you put in. Usually 100khz is standard
+i2c.write(deviceAddress,registerAddress,numOfRegisters, repeatedStart?); // takes in int, char array, int, bool
+i2c.read(deviceAddress, bufferArr, bufferSize, repeatedStart?); // int, char*, int, bool
+```
 
-[TODO: ADD EXAMPLE]
+Remember that your device address byte does differ between reading and writing, and don't mix them up. Additionally, you should know that in order to write to a byte, your first element in your char array should be the register you want to write, and the 2nd should be what you want to write to it. For example, if you want to write to register 15, and you want to write 3, your array should be {0x0f, 0x03}. 
 
-Note that in order to properly read a register, you first have to write out that register, so you may want to use the combined write/read function for that, which is shown below 
+Also, in order to read, you should 'ping' the first register you want to read from by writing it. So, let's say you want to read registers 0x20 to 0x25, you would have something along the lines of 
 
-[TODO: ADD EXAMPLE]
+```C++
+char writeArr[1] = [0x20]; // The address of the register we want 
 
-If there's anything you're confused about, please ping us before you ask Claude or your LLM of choice. We were all recruits once, and are happy to help in any way we can. 
+char buf[6]; //empty buffer to store our data when we read
+
+i2c.write(writeAddr, writeArr, 1, false);
+i2c.read(readAddr, buf, 6, true);
+```
+
+Lastly, for the repeated start conditional, it basically just tells the bus whether you're still "busy" or not, so when we're reading, we want it on since we want the IMU to keep spitting out data at us for some time after our first write. However, when we actually write to a register, we want it false, since as soon as we're done as soon as our message is sent. 
+
+Feel free to reference the i2c interactions part of the datasheet if you want some more resources (page 100). 
