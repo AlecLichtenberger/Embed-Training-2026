@@ -1,9 +1,12 @@
+# If you're poking around here, you're either a nerd, or completely lost
+# Assuming you're the former, this file helps us manage our builds
 cmake_minimum_required(VERSION 3.16)
+
+# This sets the projects internal name (we won't ever see it)
+# The CXX tag just means that we're in C++
 project(training_compile_check CXX)
 
-# Keep generated binaries and archives inside the build tree so the source
-# repository stays cleaner and IDE/VS-style side outputs do not leak into the
-# repository root.
+# These prevent our outputs from cluttering up our directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -11,25 +14,15 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Lets editors (VS Code C/C++ extension, clangd, CLion) resolve the mock
-# includes and stop showing "cannot find mbed.h" squiggles. Without this,
-# the code still compiles fine from the command line -- squiggles are an
-# editor-indexing problem, not a build problem -- but trainees will see red
-# underlines everywhere and assume something's broken.
+# This lets our IDE figure out how the #includes work, so stops us from seeing
+# erroneous squiggles under everything
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# ---------------------------------------------------------------------------
-# This build never touches the ARM toolchain or real mbed-os. It compiles
-# with whatever host compiler CMake finds (MSVC on Windows, AppleClang on
-# macOS, GCC on WSL/Linux) and only checks that trainee code TYPE-CHECKS --
-# it does not produce anything that flashes to a robot.
-# ---------------------------------------------------------------------------
-
-# 1) Our host stand-in for the mbed API surface.
+# Our LARP embedOS
 include_directories(${CMAKE_SOURCE_DIR}/mbed-os)
 
-# 2) Project-root include path so repo-relative includes like
-#    "base_robot/BaseRobot.h" and "util/..." resolve correctly.
+# These directories make it easier to do #includes, so that we can just put
+# the final parts and not do the whole thing 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/mbed-os/drivers)
 include_directories(${CMAKE_SOURCE_DIR}/core/subsystems)
@@ -37,29 +30,14 @@ include_directories(${CMAKE_SOURCE_DIR}/core)
 include_directories(${CMAKE_SOURCE_DIR}/base_robot)
 include_directories(${CMAKE_SOURCE_DIR}/robots)
 
-# ---------------------------------------------------------------------------
-# Self-check: proves the mock satisfies real mbed usage patterns. Every
-# trainee should be able to build and run this with zero setup beyond a
-# compiler + CMake.
-# ---------------------------------------------------------------------------
-add_executable(self_check robots/Infantry/self_check.cpp)
+# This basically declares what exactly we're gonna be doing
+# As you can see, we're going to be using Infantry.cpp, and making
+# an object (.o), as opposed to other types such as static, shared, or interface
 
-# Try compiling the actual robot translation unit in host mode.
-# This is intentionally a compile-only check; if the source relies on real
-# hardware-specific mbed-os details, the compiler should report the real gap.
 add_library(infantry_check OBJECT robots/Infantry/Infantry.cpp)
 
-# ---------------------------------------------------------------------------
-# Trainee submissions: add one OBJECT library per file you want checked.
-# OBJECT libraries compile to a .o/.obj but are never linked into a runnable
-# binary here, so trainees don't need working implementations of every
-# hardware-touching class -- only the headers need to resolve and the types
-# need to line up. This is exactly the "does it compile" bar you want.
-#
-# Example, once you've copied in ChassisSubsystem.h to real_headers/:
-#
-# add_library(chassis_check OBJECT ChassisSubsystem.cpp)
-#
-# Build just that target to check just that file:
-#   cmake --build build --target chassis_check
-# ---------------------------------------------------------------------------
+# Don't worry, you don't need to know these details (I didn't before
+# I wrote this). I just put these here if you're curious. Let me 
+# know if you actually took the time to read this lol, I don't 
+# expect the trainees to poke around random files like this 
+# - Dil 

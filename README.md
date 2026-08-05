@@ -7,7 +7,7 @@ This is the official repo for Trition Robotics Embedded training. The training i
 Good luck, and don't be afraid to contact your embed lead if you have any questions, I'm more than happy to yap. - Dil 
 ## Set Up
 
-You will have to do some set up for this training, although it shouldn't take too terribly long. 
+You will have to do some set up for this training, although it shouldn't take too terribly long. Unless if you're on windows, in which case, it could take some time. Luckily your author is on windows, so please contact me if/when you run into issues. 
 
 ### 1. IDE
 
@@ -15,17 +15,142 @@ For those of you who already have a proper IDE set up with git, feel free to ski
 
 From there, the next step is to download git [here](https://git-scm.com/install/windows), and if you're mac/linux, make sure to select your proper OS at the top of the page. From there you'll have to go through a number of questions on your initial set up, but there should always be an option that's recommended. Unless if you know what you're doing, just go with that option. If you have questions during this step, feel free to contact your embed lead. 
 
-### 2. Clone this repo
-
-Once you have that all set up, go ahead and fork this repo [TODO: add picture here], and then clone it [TODO add simple example command here]. 
-
-Notes:
-
-Get some C++ compiler (Figure out how it differs on other platforms)
-
-Get Cmake and add to path https://cmake.org/download/https://cmake.org/download/
-
-Run 
+Once you're done downloading and setting up git, head into VS code and sign into your git account. The following commands should come in handy for this 
 ```
-winget install GnuWin32.Make
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
 ```
+
+### 2. Fork and clone this repo
+
+Once you have that all set up, go ahead and fork this repo, which you can do at the top of the page. 
+
+![Fork](Training%20Weeks/MiscAssets/fork.png)
+
+After you've made your fork, make sure you share it with us, so that we can check your progress week to week. 
+
+After you've done that, you should be able to clone your fork in VS code through the source control tab on the left, as shown below. 
+
+![Clone](Training%20Weeks/MiscAssets/clone.png)
+
+### 3. Software and packages
+
+Now, we need to download the necessary software and packages so that the code can properly compile. This section will be platform specific. Be aware that we primarily tested this process on windows machines, so you may run into issues on mac and linux. 
+
+### Windows
+
+Run the following commands. 
+
+``` 
+winget install Git.Git
+winget install Kitware.CMake
+winget install Ninja-build.Ninja
+winget install --id Microsoft.VisualStudio.2022.BuildTools --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+```
+
+Be aware that the last command is a fairly long download, so it'll take longer than the previous 3. Once you have that done, to make sure that it's all properly installed, go into your windows search bar, and search "Developer Powershell for VS Code 2022" (Note: at time of writing it was 2022, but it's highly likely that you're on 2026. The number should match whatever version of VS code you're actually on).
+
+![Powershell](Training%20Weeks/MiscAssets/dev-powershell.png)
+
+All you need is for it to show up, if it doesn't show up, that means that at the very least, the last command didn't work, and we suggest you try rerunning the install commands. If they're properly installed, they should all return that you already have the packages downloaded. 
+
+Now that we have that set up, we'll have to configure some VS code settings. Start by opening up your preferences.json, which you can do by hitting ctrl+shift+P, and typing in "preferences: Open User Settings (JSON).
+
+![User Settings Json](Training%20Weeks/MiscAssets/SettingJson.png)
+
+Once that's open, you'll want to append a comma to the last part of the settings, and then paste in the following:
+
+```
+"terminal.integrated.profiles.windows": {
+  "Developer PowerShell for VS 2022": {
+    "source": "PowerShell",
+    "args": [
+      "-NoExit", "-Command",
+      "&{Import-Module 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll'; Enter-VsDevShell -VsInstallPath 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools' -SkipAutomaticLocation -DevCmdArguments '-arch=x64'}"
+    ]
+  }
+},
+"terminal.integrated.defaultProfile.windows": "Developer PowerShell for VS 2022"
+```
+
+What this does is make it so that we automatically boot into the Developer Powershell environment when we open VS code, and that we don't have to manually search for the Developer Powershell, cd into our repo, and then use `code .` to open up VS code. (Note: You can totally do that if you like, I just think its a hassle. I understand though if you know what you're doing and don't wanna mess with whatever you already have in your json.)
+
+Also, note that my command assumes that VS code is downloaded in your C drive in your program files x86. If that isn't the case for you, you'll have to modify the command to include the proper path to your installation. (Contact your lead for help if you need it). 
+
+When you're done, your json should look something like this 
+
+![JsonPic](Training%20Weeks/MiscAssets/actualjson.png)
+
+Ok, now we're nearly done. Once you have saved your json file, you want to reboot VS code, and try the following command: 
+
+```
+cmake -S mini-repo -B mini-repo/build -G Ninja
+```
+
+If that results in something along the lines of 
+
+```
+- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build
+cmake --build mini-repo/build --target infantry_check
+ninja: no work to do.
+```
+
+Then you know you have it properly set up. 
+
+Something you might have noticed is that the previous command is kind of painful to run every time we want to compile our code, so we can install 'make' to make our lives a little easier.
+
+Run the following command, and restart 
+```
+winget install ezwinports.make
+```
+
+Then, try 'make infantry-build' in your terminal. You should see that you end up with the same output.
+
+Ok windows people, you are free to get started with the trainings. 
+
+### Mac
+
+Ok Mac people, please be aware that your author does not use Mac, but from what Mr. Claude told me, your set up is actually very simple, here's what you need to do. Run the following commands.
+
+```
+xcode-select --install
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install cmake ninja git 
+```
+
+I'm told that once homebrew is installed, it prints out a 'next steps' block, and that you should pay attention to it. 
+
+To make sure that everything is working properly, try using `make infantry-build`, and see if it gets you something along the lines of 
+
+```
+- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build
+cmake --build mini-repo/build --target infantry_check
+ninja: no work to do.
+```
+
+If that doesn't work, try `cmake -S mini-repo -B mini-repo/build -G Ninja` 
+
+### Linux
+
+Hello Linux people, I'm also told that your set up process is really simple. Run the following:
+
+```
+sudo apt update
+sudo apt install -y build-essential cmake ninja-build git
+```
+
+Then try `make infantry-build`. It should result in something similar to. 
+
+```
+- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build
+cmake --build mini-repo/build --target infantry_check
+ninja: no work to do.
+```
+
+If that doesn't work, try `cmake -S mini-repo -B mini-repo/build -G Ninja` 
