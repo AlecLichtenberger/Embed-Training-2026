@@ -1,3 +1,0 @@
-D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/infantry_check.dir
-D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/edit_cache.dir
-D:/VS Code/TR/TR Training/Embed-Training-2026/mini-repo/build/CMakeFiles/rebuild_cache.dir
