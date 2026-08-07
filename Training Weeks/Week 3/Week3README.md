@@ -6,6 +6,8 @@ While the previous two weeks have covered general background knowledge (with the
 
 The embed codebase can be broadly categorized into 2 main categories: subsystems and utilities. Subsystems are generally higher-level functions of the robot, such as driving and shooting logic, and conversely, util deals with the lower-level parts of the robot, such as comms, sensors, controls, and algorithms. While this week will be focusing on subsystems, each subsystem ultimately depends on various utilities to function.
 
+Additionally, you should be aware that we have our actual runtime logic in a robot specific implementation file (.cpp). For this training, we'll only have infantry.cpp, but in the garage you have two other robots to worry about, hero and sentry. The differences between the robots aren't relevant right now, but you can think of infantry as the "base robot" (not to be confused with the actual baserobot.h), and the other two as variations of it. Also, we commonly refer to this implementation file as "main", so later on, when I ask you to do something in main, just be aware that I'm talking about the infantry.cpp file. If you're confused by why 'main' refers to the runtime logic, that's a vestigal trait of when we used to do all of our logic explicitly in the main() function, rather than just calling our set up and periodic loop like we do today. 
+
 ## A Brief Forey into Util-Land
 
 While util is broad, there's a few key parts that you should be familiar with before starting with chassis and gimbal logic. Let's go function by function
@@ -16,7 +18,7 @@ While util is broad, there's a few key parts that you should be familiar with be
 
 When it comes to orientation, you should already be familiar with one half of it: the IMU. The IMU is responsible for estimating the pitch and yaw of the robot's head, and its complement is the encoder, which estimates yaw for the chassis. Although it may seem redundant to measure yaw from both the head and the chassis, the reason is that the head needs to be able to operate fully independently of the chassis, since during our competetion, we often beyblade to make our armor panels harder to hit. 
 
-TODO: Include gif of beyblade
+<img src="Assets/beyblade gif fr.gif" alt="drawing" width="400"/>
 
 Additionally, knowing the difference between the turret-yaw and chassis-yaw allows for drive modes such as yaw-oriented, which moves relative to where the head is looking, and yaw-aligned, which lines up the wheels with the direction the turret is looking. 
 
@@ -38,6 +40,8 @@ Lastly, we'll repeat this warning later, but **be careful when using the control
 
 ## Controller Logic in main
 
+**Note: "main" here means in the infantry.cpp, as opposed to the logic in the core folder**
+
 Now that you have a good understanding of the controller, it's a good time to start adding some of the controller logic into baserobot (**mini-repo/BaseRobot/**)
 
 In remote read(), under //Driving input, let jx and jy be the left joystick's x-axis reading and y-axis reading respectively. These readings can be obtained from 
@@ -49,7 +53,7 @@ remote_.getJoystickValue(DJIRemote2::Joystick::LEFT_HORIZONTAL); //LEFT_VERTICAL
 
 From there, you should do the same for jyaw and jpitch (right stick x and y axis respectively), and then **restrict all j-variables to the interval [-1,1]** (HINT: Use max and min functions).  
 
-Once you're done with that, head to the periodic function in main **TODO: ADD THE LINK**, and add the proper drive mode states under //Chassis Logic. For now, just create the states and make them conditional on the remote center switch state (C N S), you don't have to worry about logic yet. Specifically, you should make make a conditional statement where if we have mode N, we should be in `ROBOT_ORIENTED` followed by an else statement that leads to a neutral state. Note that we will come back to this later, and eventually make mode S a dedicated state in week 5. Mode C is dedicated as a neutral state, but we don't explicitly check it in our conditional for safety. (See our note)
+Once you're done with that, head to the periodic function in main (mini-repo/robots/infantry/infantry.cpp), and add the proper drive mode states under //Chassis Logic. For now, just create the states and make them conditional on the remote center switch state (C N S), you don't have to worry about logic yet. Specifically, you should make make a conditional statement where if we have mode N, we should be in `ROBOT_ORIENTED` followed by an else statement that leads to a neutral state. Note that we will come back to this later, and eventually make mode S a dedicated state in week 5. Mode C is dedicated as a neutral state, but we don't explicitly check it in our conditional for safety. (See our note)
 
 You can check the switch state as shown below. 
 
@@ -146,7 +150,7 @@ To start with, the wheels we use are mecanum wheels that allow for omnidirection
 
 These wheels are placed in a X pattern, so that we also have the ability to rotate the robot clockwise and counterclockwise. Assume that all positive values will result in clockwise rotation, and conversely all negative results in counterclockwise rotation. From this you should be able to figure out what combination of positive and negative motor inputs should result in forward, backward, left and right movement. (Hint: Draw out a diagram and take the sum of the velocity vectors of each wheel. Note that we are assuming some familiarity with mechanics/vectors, but if you haven't taken those classes yet, contact your embed lead). 
 
-Once you feel comfortable in understanding how the driving logic works, head to main (TODO: add the location when mini-repo is real), and assign `des_chassis_state.vX` and `des_chassis_state.vY` to `max_linear_vel * jY` and `max_linear_vel * jX` respectively (note: vX = constant*jY is indeed counter-intuitive but that's just our convention).  
+Once you feel comfortable in understanding how the driving logic works, head to main (mini-repo/robots), and assign `des_chassis_state.vX` and `des_chassis_state.vY` to `max_linear_vel * jY` and `max_linear_vel * jX` respectively (note: vX = constant*jY is indeed counter-intuitive but that's just our convention).  
 
 Then, implement your driving logic under //Chassis Logic, remember that mode N should correspond to `ROBOT-ORIENTED`. 
 

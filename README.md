@@ -4,6 +4,8 @@ Hello everyone!
 
 This is the official repo for Trition Robotics Embedded training. The training is broken up into weeks, which each have their own read-me and assignment. The way the training is structured, our goal is for you to work on one part of embed at a time, so for example, in week 2 you're developing a driver for the BNO055 IMU, and then working on chassis and gimbal logic in the next. The ultimate goal is by the 5th week, your codebase should be a mini-embed repo, complete with yaw-oriented drive. If you're confused by the technical-speak, that's expected and okay, after all you have weeks to become fluent. 
 
+Before you get started, something you should be aware of is that these trainings were written with some of our colloquial mannerisms. For instance, in week 3, when I mention doing something in "main", I'm really referring to infantry.cpp. Despite it being occassionally confusing, I have chosen to keep these in as "features" rather than bugs to be rewritten, since as a part of the training you should ideally be fluent with our vernacular, since that's the reality of any project team you'll be in. While I have done my best to try and explain these as they come up, by their nature it's likely that I've missed a few, so if you see any part of the trainings that are unclear, feel free to contact me.  
+
 Good luck, and don't be afraid to contact your embed lead if you have any questions, I'm more than happy to yap. - Dil 
 ## Set Up
 
