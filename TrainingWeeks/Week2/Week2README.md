@@ -8,13 +8,13 @@ For our purposes, this quantity is most often voltage, but can occasionally be o
 
 Analog signals are meant to be read in terms of some continuous interval, for example between 0V and 5V. While continuous, as you'd expect there's a limited amount of precision in the reading, which is usually +/- 0.1V or 0.01V. In the example below, we can see that we have some analog signal that has a voltage of 1.935V at t=4.34.
 
-![Analog Signal Graph](Assets/week2%20Analog%20signal.png)
+![Analog Signal Graph](Assets/week2_Analog_signal.png)
 
 ## Digital Signals
 
 Digital signals are constricted to some set of discrete values, most commonly 0 and 1. This can be done through a variety of ways, such as setting some voltage to be a cut off (i.e. if V>0.5, count that as a 1, otherwise consider it a 0); however those details are beyond the scope of this training. An example of a digital signal is shown below. 
 
-![Digital Signal Graph](Assets/week2%20digital%20signal.png)
+![Digital Signal Graph](Assets/week2_digital_signal.png)
 
 Something you should be aware of when it comes to digital signals is that they rely on binary. Put simply, binary is a base-2 numbering system, as opposed to our traditional base 10 system. For example, consider the number 137. We can break down each digit as some multiple of a power of 10, as tabulated below. The only restriction is that the coefficients must be integers less than 10, otherwise it would overflow into the next power of 10.
 
@@ -50,12 +50,12 @@ Something you should be aware of is that these are **only summaries meant to int
 
 I2C, which stands for inter-intergrated circuit, is a two-pin protocol between a controller (also known as a master device), and some number of peripheral devices (also known as slave devices) each with a unique address, as shown below. The purpose of the address is that so the controller can pick one particular device it wants to send or receive a message to at some time. This is done by sending a particular device's address to select it, and conversely, until a peripheral receives its exact address, it won't do anything except continue waiting. 
 
-![I2C Organization diagram](Assets/week2%20i2c%20organization.png)
+![I2C Organization diagram](Assets/week2_i2c_organization.png)
 
 
 The two-pin denomination comes from the fact that the controller communicates to the peripherals via two pins: SCL and SDA. SCL, which is also denoted as SCK on some boards, stands for Serial Clock, and its purpose is to synchronize communication between the controller and peripheral. This is done by regularly flipping between high and low at some predetermined rate (typically 100khz). On the rising edge (when the clock goes from low to high), the SDA (Serial Data) pin is sampled, as shown below. 
 
-![I2C Graph](Assets/week2%20I2C.jpg)
+![I2C Graph](Assets/week2_I2C.jpg)
 
 ### A Quick Note on Addresses
 
@@ -69,7 +69,7 @@ To illustrate this point with an example, when it comes to our IMU on our robots
 
 For a more intuitive understanding of this, it may be helpful to mentally split this byte into sections, where the first 7 bits are the actual "address", and the last bit merely instructs the peripheral what's happening. This kind of division within a byte is actually fairly routine on peripherals, as each register (internal memory byte) on the device itself is divided into groups of bits that encode for something, as shown below. 
 
-![IMU datasheet picture](Assets/datasheet%20picture.png)
+![IMU datasheet picture](Assets/datasheet_picture.png)
 
 ## CAN: Controller Area Network 
 
@@ -83,7 +83,7 @@ This resistance to EMI makes CAN well suited for communication between our micro
 
 For completeness, here's a simple wiring diagram for CAN. Be aware that red is for CAN high, and black is for CAN low. 
 
-![CAN Wiring Diagram](Assets/week2%20CAN%20wiring%20diagram.png)
+![CAN Wiring Diagram](Assets/week2_CAN_wiring_diagram.png)
 
 # Assignment: Implementing BNO055 IMU
 

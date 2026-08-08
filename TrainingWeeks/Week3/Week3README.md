@@ -14,11 +14,11 @@ While util is broad, there's a few key parts that you should be familiar with be
 
 ### Orientation 
 
-![Pitch Roll Yaw Diagram](Assets/Pitch%20Roll%20and%20Yaw.jpg)
+![Pitch Roll Yaw Diagram](Assets/Pitch_Roll_and_Yaw.jpg)
 
 When it comes to orientation, you should already be familiar with one half of it: the IMU. The IMU is responsible for estimating the pitch and yaw of the robot's head, and its complement is the encoder, which estimates yaw for the chassis. Although it may seem redundant to measure yaw from both the head and the chassis, the reason is that the head needs to be able to operate fully independently of the chassis, since during our competetion, we often beyblade to make our armor panels harder to hit. 
 
-<img src="Assets/beyblade gif fr.gif" alt="drawing" width="400"/>
+<img src="Assets/beyblade_gif_fr.gif" alt="beyblade gif" width="600"/>
 
 Additionally, knowing the difference between the turret-yaw and chassis-yaw allows for drive modes such as yaw-oriented, which moves relative to where the head is looking, and yaw-aligned, which lines up the wheels with the direction the turret is looking. 
 
@@ -28,7 +28,7 @@ Also, there are some nuances between the encoder's absolute yaw and the IMU's (I
 
 While communications is very broad (I'm sure you're tired of hearing that), and also covers communications with the jetson (Auto's computer), and the referee system, for our purposes we're only worried about the controller.
 
-![VT13 Controller](Assets/VT13Controller.jpg)
+<img src="Assets/VT13Controller.jpg" alt="controller" width ="600"/>
 
 The controller operates similarly to a videogame controller: the left-stick handles the chassis movements, and the right-stick controls the turret; however, there are a few key exceptions. The first is that to turn it on, you have to tap and hold the power button. Also the switch in the center controls your drive-mode, C is neutral, N is typically yaw-oriented, and S is beyblade. 
 
@@ -146,7 +146,7 @@ While there are a number of files in the subsystems folder, it all boils down to
 
 To start with, the wheels we use are mecanum wheels that allow for omnidirectional movement (forward, backward, left, and right).
 
-<img src="Assets/Mecanum Wheels.png" width="300"> <img src="Assets/omni.png" width="300">
+<img src="Assets/Mecanum_Wheels.png" width="300"> <img src="Assets/omni.png" width="300">
 
 These wheels are placed in a X pattern, so that we also have the ability to rotate the robot clockwise and counterclockwise. Assume that all positive values will result in clockwise rotation, and conversely all negative results in counterclockwise rotation. From this you should be able to figure out what combination of positive and negative motor inputs should result in forward, backward, left and right movement. (Hint: Draw out a diagram and take the sum of the velocity vectors of each wheel. Note that we are assuming some familiarity with mechanics/vectors, but if you haven't taken those classes yet, contact your embed lead, we can work through it together). 
 

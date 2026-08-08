@@ -27,13 +27,13 @@ git config --global user.email "your.email@example.com"
 
 Once you have that all set up, go ahead and fork this repo, which you can do at the top of the page. 
 
-![Fork](Training%20Weeks/MiscAssets/fork.png)
+![Fork](TrainingWeeks/MiscAssets/fork.png)
 
 After you've made your fork, make sure you share it with us, so that we can check your progress week to week. 
 
 After you've done that, you should be able to clone your fork in VS code through the source control tab on the left, as shown below. 
 
-![Clone](Training%20Weeks/MiscAssets/clone.png)
+![Clone](TrainingWeeks/MiscAssets/clone.png)
 
 ### 3. Software and packages
 
@@ -52,13 +52,13 @@ winget install --id Microsoft.VisualStudio.2022.BuildTools --override "--wait --
 
 Be aware that the last command is a fairly long download, so it'll take longer than the previous 3. Once you have that done, to make sure that it's all properly installed, go into your windows search bar, and search "Developer Powershell for VS Code 2022" (Note: at time of writing it was 2022, but it's highly likely that you're on 2026. The number should match whatever version of VS code you're actually on).
 
-![Powershell](Training%20Weeks/MiscAssets/dev-powershell.png)
+![Powershell](TrainingWeeks/MiscAssets/dev-powershell.png)
 
 All you need is for it to show up, if it doesn't show up, that means that at the very least, the last command didn't work, and we suggest you try rerunning the install commands. If they're properly installed, they should all return that you already have the packages downloaded. 
 
 Now that we have that set up, we'll have to configure some VS code settings. Start by opening up your preferences.json, which you can do by hitting ctrl+shift+P, and typing in "preferences: Open User Settings (JSON).
 
-![User Settings Json](Training%20Weeks/MiscAssets/SettingJson.png)
+![User Settings Json](TrainingWeeks/MiscAssets/SettingJson.png)
 
 Once that's open, you'll want to append a comma to the last part of the settings, and then paste in the following:
 
@@ -81,7 +81,7 @@ Also, note that my command assumes that VS code is downloaded in your C drive in
 
 When you're done, your json should look something like this 
 
-![JsonPic](Training%20Weeks/MiscAssets/actualjson.png)
+![JsonPic](TrainingWeeks/MiscAssets/actualjson.png)
 
 Ok, now we're nearly done. Once you have saved your json file, you want to reboot VS code, and try the following command: 
 

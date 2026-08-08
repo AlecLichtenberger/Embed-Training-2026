@@ -22,14 +22,14 @@ With that discussion done, I now hope you have some idea of how we're going to g
 
 1. Which sensor is better suited for getting this done? IMU or Encoder?
 
-2. Do I even need both or is one sufficient for what I need to do. 
+2. Do I even need both or is one sufficient for what I need to do? 
 
 Give yourself some time to think about the second question. It's okay if you can't fully answer it, the important part is trying to reason about it. 
 
 
 The answers are that 
 
-1. Encoder, since its much more accurate and doesn't drift
+1. Encoder, since its much more accurate and doesn't drift.
 
 2. Surprisingly, for yaw-oriented drive, we only need the encoder, the IMU, like we discussed is much better suited for turret applications, and the encoder gives us the exact measurement we need: the delta between chassis orientation and head orientation. 
 
@@ -41,21 +41,14 @@ For those of you who have taken linear algebra, the answer should be trivial, we
 
 So, now that we know that, all we have to do is some simple matrix multiplication to find our rotated vX and vY, which we'll write as vX' and vY':
 
-$$
-\begin{pmatrix} v_X' \\ v_Y' \end{pmatrix}
-=
-\begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}
-\begin{pmatrix} v_X \\ v_Y \end{pmatrix}.
-$$
+$$ \begin{pmatrix} v_X' \\ v_Y' \end{pmatrix} = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} \begin{pmatrix} v_X \\ v_Y \end{pmatrix}.$$
 
 Which simplifies to:
-$$
-v_X' = v_X\cos\theta - v_Y\sin\theta
-$$
-$$
-v_Y' = v_X\sin\theta + v_Y\cos\theta .
-$$
+$$ v_X' = v_X\cos\theta - v_Y\sin\theta $$
+$$ v_Y' = v_X\sin\theta + v_Y\cos\theta . $$
 
 If you look in the code, these are the exact outputs of our rotateChassisSpeed function. 
 
 ## Implementing Yaw Oriented Drive
+
+Ok, now time to actually implement Yaw-Oriented drive. The first step is to go into the chassis subsystem, and go thru the TODO I've placed, which outline the structure (it should only be a few lines of code). Then, go into infantry.cpp and put in the yaw oriented mode, along with some run time logic. **REMEMBER TO INCLUDE** `des_chassis_state.vOmega = 0;`, and also that desired turret state should be set to aim. Feel free to go back and reference week 3 if you're confused. 
