@@ -159,13 +159,13 @@ public:
      * The setWheelSpeeds method drives each motor at a specific speed
      * @param wheelSpeeds The speeds in RPM to drive each motor at
      */
-    float setWheelSpeeds(WheelSpeeds wheelSpeeds);
+    void setWheelSpeeds(WheelSpeeds wheelSpeeds);
 
-    // /**
-    //  * The normalizeWheelSpeeds method normalizes each motor with respect to m_OmniKinematicsLimits.max_Vel
-    //  * @param wheelSpeeds The speeds in m/s to drive each motor at
-    //  */
-    // WheelSpeeds normalizeWheelSpeeds(WheelSpeeds wheelSpeeds) const;
+    /**
+     * The normalizeWheelSpeeds method normalizes each motor with respect to m_OmniKinematicsLimits.max_Vel
+     * @param wheelSpeeds The speeds in m/s to drive each motor at
+     */
+    WheelSpeeds normalizeWheelSpeeds(WheelSpeeds wheelSpeeds) const;
 
     /**
      * The driveMotors method drives each motor at a specific speed
@@ -184,7 +184,7 @@ public:
      *
      * @param desiredChassisSpeeds The robot-relative speeds (vX, vY, and vOmega) in m/s
      */
-    float setChassisSpeeds(ChassisSpeeds desiredChassisSpeeds_, DRIVE_MODE mode = ROBOT_ORIENTED);
+    void setChassisSpeeds(ChassisSpeeds desiredChassisSpeeds_, DRIVE_MODE mode = ROBOT_ORIENTED);
 
     /**
      * The rotateChassisSpeed method

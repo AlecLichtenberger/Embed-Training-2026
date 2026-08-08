@@ -87,7 +87,9 @@ For completeness, here's a simple wiring diagram for CAN. Be aware that red is f
 
 # Assignment: Implementing BNO055 IMU
 
-Your assignment for this week is implementing a simple driver for the BNO055 IMU. The header and implementation files are located in **mini-repo/core/util/peripherals/imu**. Make sure you implement all the functions we have provided in the header, and feel free to add your own functions as needed. This driver should be able to initalize the BNO055, and grab XYZ acceleration and gyro data. Once you're able to do that, make sure you set the BNO055 to 9DOF mode, and then start grabbing the pitch, roll, and yaw from it as well. 
+Your assignment for this week is implementing a simple driver for the BNO055 IMU. If you're not familiar with what an IMU is, it stands for inertial measurement unit, which is fancy-speak for saying it measures acceleration and angular velocity by sensing inertial forces. The BNO055 in particular also has a built-in magnetometer, which is used to measure the Earth's magnetic field, but we'll save the more detailed discussion for week 5. For now, you should focus more on the implementation, not necessarily the details. 
+
+The header and implementation files are located in **mini-repo/core/util/peripherals/imu**. Make sure you implement all the functions we have provided in the header, and feel free to add your own functions as needed. This driver should be able to initalize the BNO055, and grab XYZ acceleration and gyro data. Once you're able to do that, make sure you set the BNO055 to 9DOF mode, and then start grabbing the pitch, roll, and yaw from it as well. 
 
 To help you, here's a [link](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf) to the datasheet (HINT: Start by looking for the relevant registers, and also find the constants to convert accel and gyro register readings into real units), and we'll explain some of the relevant i2c functions below. 
 

@@ -134,7 +134,7 @@ class Infantry : public BaseRobot {
         : BaseRobot(config),
           // clang-format off
         i2c_(IMU_I2C_SDA, IMU_I2C_SCL), 
-        imu_(i2c_, 0x6B),
+        imu_(i2c_, 0x6B), // THIS IS THE IMU CONSTRUCTOR
         encoder_(PB_4),
         // jetson_raw_serial(PC_12, PD_2,115200),
         // jetson(jetson_raw_serial),
@@ -171,8 +171,9 @@ class Infantry : public BaseRobot {
         // imu_.mahonyUpdateIMU(dt_us / 1000000.0); 
         imuAngles = imu_.getImuAngles();
         max_linear_vel = MAX_VEL;
-        des_chassis_state.vX = jy * max_linear_vel;
-        des_chassis_state.vY = jx * max_linear_vel;
+        // TODO: What should these be instead of zero? 
+        des_chassis_state.vX = 0;
+        des_chassis_state.vY = 0;
 
         // Read jetson
         // jetson_state = jetson.read();
@@ -183,43 +184,23 @@ class Infantry : public BaseRobot {
         // }
 
         // Turret from remote
-        yaw_desired_angle -= myaw * 0.01;
-        yaw_desired_angle -= jyaw * JOYSTICK_YAW_SENSITIVITY_DPS * dt_us / 1000000;
-        yaw_desired_angle = capAngle(yaw_desired_angle);
-        des_turret_state.yaw_angle_degs = yaw_desired_angle;
+        // TODO: IMPLEMENT TURRET LOGIC HERE (Hint: update desired pitch and yaw from remote readings)
+        // yaw_desired_angle = ?
 
-        pitch_desired_angle -= mpitch * 0.01;
-        pitch_desired_angle -= jpitch * JOYSTICK_PITCH_SENSITIVITY_DPS * dt_us / 1000000;
-        pitch_desired_angle = std::clamp(pitch_desired_angle, PITCH_LOWER_BOUND, PITCH_UPPER_BOUND);
-        des_turret_state.pitch_angle_degs = pitch_desired_angle;
+
+
+
+        // pitch_desired_angle = ?
+
+
+
+
+
 
         // Chassis logic
-        if (drive == 'u' || (drive == 'o' && remote_.getMode() == DJIRemote2::ModeSwitch::MODE_N)) {
-            des_chassis_state.vOmega = 0;
-            chassis_.setChassisSpeeds(des_chassis_state, ChassisSubsystem::DRIVE_MODE::YAW_ORIENTED);
-            des_turret_state.turret_mode = TurretState::AIM;
-            referee_.is_aligned = false;
-            referee_.is_cv_on = false;
-            referee_.is_spinning = false;
-        }  else if (drive == 'd' || 
-                   (drive == 'o' &&
-                    remote_.getMode() == DJIRemote2::ModeSwitch::MODE_S)) {
-            des_chassis_state.vOmega = omega_speed;
-            chassis_.setChassisSpeeds(des_chassis_state, ChassisSubsystem::DRIVE_MODE::YAW_ORIENTED);
-            des_turret_state.turret_mode = TurretState::AIM;
-            referee_.is_aligned = false;
-            referee_.is_cv_on = false;
-            referee_.is_spinning = true;
-        } else {
-            chassis_.setWheelPower({0, 0, 0, 0});
-            des_turret_state.turret_mode = TurretState::SLEEP;
-            des_turret_state.yaw_angle_degs = turret_.getState().yaw_angle_degs;
-            yaw_desired_angle = turret_.getState().yaw_angle_degs;
-            des_turret_state.pitch_angle_degs = 0;
-            referee_.is_aligned = false;
-            referee_.is_cv_on = false;
-            referee_.is_spinning = false;
-        }
+        // TODO: ADD THE CHASSIS LOGIC HERE
+
+
 
         // Shooter Logic 
         // //REMOVED remote_.PAUSEToggled() == true && FROM THE FIRST CONDITION

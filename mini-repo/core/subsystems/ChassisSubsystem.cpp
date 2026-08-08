@@ -55,27 +55,23 @@ ChassisSubsystem::ChassisSubsystem(const Config &config)
 
 
 //TODO: Implement setWheelSpeeds to set the speed of each wheel based on the desired wheel speeds. 
-float ChassisSubsystem::setWheelSpeeds(WheelSpeeds wheelSpeeds)
+void ChassisSubsystem::setWheelSpeeds(WheelSpeeds wheelSpeeds)
 {
 
 }
 
-float ChassisSubsystem::setChassisSpeeds(ChassisSpeeds desiredChassisSpeeds_, DRIVE_MODE mode)
+void ChassisSubsystem::setChassisSpeeds(ChassisSpeeds desiredChassisSpeeds_, DRIVE_MODE mode)
 {
     double yawCurrent = 0;
-    if (mode == REVERSE_YAW_ORIENTED)
-    {
-        yawCurrent = encoder->encoderMovingAverage();
-        if (yawCurrent < 0.0) {
-            yawCurrent += 360.0;
-        }
-        else if (yawCurrent > 360.0) {
-            yawCurrent -= 360.0;
-        }
-        desiredChassisSpeeds = rotateChassisSpeed(desiredChassisSpeeds_, yawCurrent);
-    }
-    else if (mode == YAW_ORIENTED)
-    {
+    if (mode == YAW_ORIENTED)
+    {   //TODO: Figure this out 
+
+        // Consider the following: Updating Yaw Current
+
+        // Account for rollover at 360 degrees
+
+        // remember your rotate ChassisSpeeds
+
         yawCurrent = encoder->encoderMovingAverage();
         if (yawCurrent < 0.0) {
             yawCurrent += 360.0;
@@ -142,6 +138,32 @@ float ChassisSubsystem::setChassisSpeeds(ChassisSpeeds desiredChassisSpeeds_, DR
     WheelSpeeds wheelSpeeds = chassisSpeedsToWheelSpeeds(desiredChassisSpeeds); // in m/s (for now)
     wheelSpeeds = normalizeWheelSpeeds(wheelSpeeds);
     wheelSpeeds *= (1 / (WHEEL_DIAMETER_METERS / 2) / (2 * PI / 60) * M3508_GEAR_RATIO);
-    float scale = setWheelSpeeds(wheelSpeeds);
-    return scale;
 }
+
+ChassisSpeeds ChassisSubsystem::rotateChassisSpeed(ChassisSpeeds speeds, double yawCurrent)
+{
+    // rotate angle counter clockwise
+    double theta = (yawCurrent - yawPhase) / 180 * PI;
+
+    return {speeds.vX * cos(theta) - speeds.vY * sin(theta),
+            speeds.vX * sin(theta) + speeds.vY * cos(theta),
+            speeds.vOmega};
+}
+
+
+WheelSpeeds ChassisSubsystem::normalizeWheelSpeeds(WheelSpeeds wheelSpeeds) const
+{
+    double speeds[4] = {wheelSpeeds.LF, wheelSpeeds.RF, wheelSpeeds.LB, wheelSpeeds.RB};
+    double max_speed = MAX_VEL;
+
+    for (double speed : speeds)
+        if (speed > max_speed)
+            max_speed = speed;
+
+    if (max_speed > MAX_VEL)
+        for (double &speed : speeds)
+            speed = speed / max_speed * m_OmniKinematicsLimits.max_Vel;
+
+    return {speeds[0], speeds[1], speeds[2], speeds[3]};
+}
+

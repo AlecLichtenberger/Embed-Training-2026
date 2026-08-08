@@ -40,7 +40,7 @@ Lastly, we'll repeat this warning later, but **be careful when using the control
 
 ## Controller Logic in main
 
-**Note: "main" here means in the infantry.cpp, as opposed to the logic in the core folder**
+**Note: "main" here means runtime logic**
 
 Now that you have a good understanding of the controller, it's a good time to start adding some of the controller logic into baserobot (**mini-repo/BaseRobot/**)
 
@@ -148,7 +148,7 @@ To start with, the wheels we use are mecanum wheels that allow for omnidirection
 
 <img src="Assets/Mecanum Wheels.png" width="300"> <img src="Assets/omni.png" width="300">
 
-These wheels are placed in a X pattern, so that we also have the ability to rotate the robot clockwise and counterclockwise. Assume that all positive values will result in clockwise rotation, and conversely all negative results in counterclockwise rotation. From this you should be able to figure out what combination of positive and negative motor inputs should result in forward, backward, left and right movement. (Hint: Draw out a diagram and take the sum of the velocity vectors of each wheel. Note that we are assuming some familiarity with mechanics/vectors, but if you haven't taken those classes yet, contact your embed lead). 
+These wheels are placed in a X pattern, so that we also have the ability to rotate the robot clockwise and counterclockwise. Assume that all positive values will result in clockwise rotation, and conversely all negative results in counterclockwise rotation. From this you should be able to figure out what combination of positive and negative motor inputs should result in forward, backward, left and right movement. (Hint: Draw out a diagram and take the sum of the velocity vectors of each wheel. Note that we are assuming some familiarity with mechanics/vectors, but if you haven't taken those classes yet, contact your embed lead, we can work through it together). 
 
 Once you feel comfortable in understanding how the driving logic works, head to main (mini-repo/robots), and assign `des_chassis_state.vX` and `des_chassis_state.vY` to `max_linear_vel * jY` and `max_linear_vel * jX` respectively (note: vX = constant*jY is indeed counter-intuitive but that's just our convention).  
 
@@ -168,5 +168,5 @@ At this point I would like to challenge you to read the header file for the turr
 
 Once you've read through the header, try going through the .cpp and fixing all the TODOs. It's not uncommon for you as a member to be told to fix the issues in a particular file where I've gone through and added "TODO" comments throughout. During this process, you are bound to get stuck. In fact, it is my goal for you to get stuck here, and ask for help, because that is the reality of embed. However, it is not my goal to demoralize you or make you frustated, rather I want you to become more comfortable asking for help and collaborating with a lead or TA through an issue, since that has been how I have personally learned a lot of the codebase. Also, don't be afraid to contact your fellow recruits during this process either, you will eventually be partnered into a capstone, so reach out and get to know each other. Lastly, it's not the end of the world if you make a mistake here, the point is to make mistakes and learn from them. 
 
-Once you have fixed the TODOs in the .cpp file, add your logic to the drive states you have in the main periodic function. Consider when you want the turret sleeping and when you want it active. Additionally, above (TODO: Add this part after we add main) complete the TODO for yaw_desired_angle and pitch desired angle. 
+Once you have fixed the TODOs in the .cpp file, add your logic to the drive states you have in the main periodic function. Consider when you want the turret sleeping and when you want it active. Additionally, complete the TODOs for yaw_desired_angle and pitch desired angle. 
 
