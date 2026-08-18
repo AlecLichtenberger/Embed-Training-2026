@@ -117,3 +117,10 @@ i2c.read(readAddr, buf, 6, true);
 Lastly, for the repeated start conditional, it basically just tells the bus whether you're still "busy" or not, so when we're reading, we want it on since we want the IMU to keep spitting out data at us for some time after our first write. However, when we actually write to a register, we want it false, since as soon as we're done as soon as our message is sent. 
 
 Feel free to reference the i2c interactions part of the datasheet if you want some more resources (page 100). 
+
+Another thing you should be aware of is that hardware isn't instant, and so you'll occasionally have to insert some delays into your functions (for example, during a reset, you should wait at least 1ms after setting the reset pin low, and at least 650ms after setting the reset pin high). This can be done through the function 
+
+```cpp
+ThisThread::sleep_for(int ms); 
+```
+

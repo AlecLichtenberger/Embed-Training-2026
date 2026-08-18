@@ -5,6 +5,7 @@
 
 #include "mbed.h"
 #include "IMU.h"
+#include <mbed-os/thisThread.cpp>
 
 typedef struct{
     double yaw;
@@ -24,6 +25,9 @@ public:
 
     public:
     BNO055(I2C &i2c, uint8_t addr) noexcept; // Constructor taking in i2c object and address
+
+    BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept; // Overloaded to take a specific reset pin 
+                                                            // Implement both of these in the cpp
 
     void init() noexcept; // Initialize the BNO055    
 
