@@ -41,9 +41,10 @@ For those of you who have taken linear algebra, the answer should be trivial, we
 
 So, now that we know that, all we have to do is some simple matrix multiplication to find our rotated vX and vY, which we'll write as vX' and vY':
 
-$$ \begin{pmatrix} v_X' \\ v_Y' \end{pmatrix} = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} \begin{pmatrix} v_X \\ v_Y \end{pmatrix}.$$
+$$ \begin{pmatrix} v_X' \\\ v_Y' \end{pmatrix} = \begin{pmatrix} \cos\theta & -\sin\theta \\\ \sin\theta & \cos\theta \end{pmatrix} \begin{pmatrix} v_X \\\ v_Y \end{pmatrix}.$$
 
 Which simplifies to:
+
 $$ v_X' = v_X\cos\theta - v_Y\sin\theta $$
 $$ v_Y' = v_X\sin\theta + v_Y\cos\theta . $$
 
