@@ -6,6 +6,7 @@
 #include "mbed.h"
 #include "IMU.h"
 #include <mbed-os/thisThread.cpp>
+#define PI 3.14159265
 
 typedef struct{
     double yaw;
@@ -18,6 +19,13 @@ typedef struct {
     double y;
     double z;
 } BNO055_VECTOR_TypeDef;
+
+typedef struct {
+    double x;
+    double y;
+    double z;
+    double w;
+} BNO055_QUATERNION_TypeDef;
 
 class BNO055: public IMU
 {
@@ -53,12 +61,24 @@ public:
 
     IMU::EulerAngles getImuAngles() override;
 
+    /** Get Quaternion XYZ&W
+     * @param int16_t type of 4D data address
+     */
+    void get_quaternion(BNO055_QUATERNION_TypeDef *qua);
+
+    /** Get Angular position from quaternion
+     *  @param double type of 3D data address
+     */
+    void get_angular_position_quat(IMU::EulerAngles *an_pos);
+
 protected:
 
     I2C *_i2c_p;
     I2C &_i2c;
-    DigitalOut _res;
-
+    DigitalOut _res;   // working buffer
+    uint8_t  chip_addr;
+    int cantReadDataCount;    
+    
 private:
 
     char     dt[10];      // working buffer
@@ -66,4 +86,8 @@ private:
     IMU::EulerAngles imuAngles;
 
 };
+
+// Quaternion data registers
+#define BNO055_QUATERNION_W_LSB 0x20
+
 #endif
