@@ -107,17 +107,17 @@ void DJIMotor::setOutput() {
 
     if (type == M3508_FLYWHEEL || type == M3508 || type == M2006) {
         if (powerOut > outputCap || powerOut > INT15_T_MAX)
-            powerOut = (short) min(outputCap, INT15_T_MAX);
+            powerOut = (short) fmin(outputCap, INT15_T_MAX);
 
         else if (powerOut < -outputCap || powerOut < -INT15_T_MAX)
-            powerOut = (short) max(-outputCap, -INT15_T_MAX);
+            powerOut = (short) fmax(-outputCap, -INT15_T_MAX);
 
     } else {
         if (powerOut > outputCap || powerOut > INT16_T_MAX)
-            powerOut = (short) min(outputCap, INT16_T_MAX);
+            powerOut = (short) fmin(outputCap, INT16_T_MAX);
 
         else if (powerOut < -outputCap || powerOut < -INT16_T_MAX)
-            powerOut = (short) max(-outputCap, -INT16_T_MAX);
+            powerOut = (short) fmax(-outputCap, -INT16_T_MAX);
     }
 
     this->powerOut = static_cast<int16_t>(powerOut);

@@ -141,7 +141,7 @@ class Infantry : public BaseRobot {
         turret_(turret_config, imu_),
         // shooter_(shooter_config),
 
-        // TODO add passing in individual PID objects for the motors
+        
         chassis_(ChassisSubsystem::Config{
             1,      // left_front_can_id
             2,      // right_front_can_id

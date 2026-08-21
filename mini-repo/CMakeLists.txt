@@ -30,11 +30,26 @@ include_directories(${CMAKE_SOURCE_DIR}/core)
 include_directories(${CMAKE_SOURCE_DIR}/base_robot)
 include_directories(${CMAKE_SOURCE_DIR}/robots)
 
+# Libraries so everything compiles
+
+file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS core/*.cpp)
+# file(GLOB_RECURSE MBED_SOURCES CONFIGURE_DEPENDS mbed-os/*.cpp)
+file(GLOB_RECURSE BASE_ROBOT_SOURCES CONFIGURE_DEPENDS base_robot/*.cpp)
+
+
 # This basically declares what exactly we're gonna be doing
 # As you can see, we're going to be using Infantry.cpp, and making
 # an object (.o), as opposed to other types such as static, shared, or interface
 
-add_library(infantry_check OBJECT robots/Infantry/Infantry.cpp)
+# add_library(infantry_check OBJECT robots/Infantry/Infantry.cpp)
+add_library(infantry_check OBJECT
+    robots/Infantry/Infantry.cpp
+    ${CORE_SOURCES}
+    ${BASE_ROBOT_SOURCES}
+)
+
+target_link_libraries(infantry_check PRIVATE mbed_os core base_robot)
+
 
 # Don't worry, you don't need to know these details (I didn't before
 # I wrote this). I just put these here if you're curious. Let me 

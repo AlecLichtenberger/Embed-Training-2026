@@ -138,7 +138,7 @@ void TurretSubsystem::periodic(float chassisRpm)
 
 
         // Pitch calc
-        float pitch_current_radians = forward_ * (turret_state.pitch_angle_degs / 360) * 2 * M_PI;
+        float pitch_current_radians = forward_ * (turret_state.pitch_angle_degs / 360) * 2 * PI;
         
         if (des_pitch <= pitch_lowerbound) {
             des_pitch = pitch_lowerbound;

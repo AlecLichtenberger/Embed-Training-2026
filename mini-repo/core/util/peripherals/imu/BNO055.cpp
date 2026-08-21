@@ -1,5 +1,12 @@
 #include "BNO055.h"
 
+
+/*
+We added these two functions since they're definitely beyond what we expect from you as recruits
+I'd be impressed if you understood the math behind them.
+Basically just know that quats are 4 axis (1 real, 3 imaginary) numbers that allow us 
+to nicely talk about rotation, and the functions spit out pitch roll and yaw. 
+*/
 void BNO055::get_quaternion(BNO055_QUATERNION_TypeDef *result)
 {
     if (cantReadDataCount > 0 && cantReadDataCount < 50) {
