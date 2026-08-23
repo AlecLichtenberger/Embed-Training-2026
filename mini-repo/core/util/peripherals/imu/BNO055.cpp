@@ -53,3 +53,55 @@ void BNO055::get_angular_position_quat(IMU::EulerAngles *result){
     memcpy(&result->pitch, &pitch, sizeof(float));
     memcpy(&result->yaw, &yaw, sizeof(float));
 }
+
+
+//Constructors
+BNO055::BNO055(I2C &i2c, uint8_t addr) noexcept : _i2c(i2c), chip_addr(addr){
+
+}
+
+BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), chip_addr(addr), _res(p_reset){ //Not sure if this extra parameter works?
+
+} 
+
+
+
+//Function Implementations
+
+/**
+ * Initialize the BNO055
+ */
+void init() noexcept{
+
+}
+
+/**
+ * Reset the BNO055
+ */
+void reset() noexcept{
+
+}
+
+
+void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
+
+}
+
+
+void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
+
+}
+
+void BNO055::change_fusion_mode(uint8_t mode){
+
+}
+
+IMU::EulerAngles BNO055::read(){
+
+}
+
+IMU::EulerAngles BNO055::getImuAngles(){
+
+}
+
+
