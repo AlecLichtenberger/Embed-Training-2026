@@ -57,41 +57,53 @@ void BNO055::get_angular_position_quat(IMU::EulerAngles *result){
 
 //Constructors
 BNO055::BNO055(I2C &i2c, uint8_t addr) noexcept : _i2c(i2c), chip_addr(addr){
-
+    IMU::EulerAngles imuAngles;
+    cantReadDataCount = 0;
+    _i2c_p = &i2c;
 }
 
 BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), chip_addr(addr), _res(p_reset){ //Not sure if this extra parameter works?
-
+    IMU::EulerAngles imuAngles;
+    cantReadDataCount = 0;
+    _i2c_p = &i2c;
 } 
-
-
 
 //Function Implementations
 
 /**
  * Initialize the BNO055
  */
-void init() noexcept{
+void BNO055::init() noexcept{
 
 }
 
 /**
  * Reset the BNO055
  */
-void reset() noexcept{
+void BNO055::reset() noexcept{
 
 }
 
-
+/**
+ * Get acceleration of the BNO055, through math?
+ * @param la pointer to the x,y,z of the imu
+ */
 void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
-
+    //Implement math to calculate acceleration
 }
 
-
+/**
+ * Get the gyro of the BNO055, through math?
+ * @param gr pointer to the x,y,z of the imu
+ */
 void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
 
 }
 
+/** Change fusion mode
+* @param fusion mode
+* @return none
+*/
 void BNO055::change_fusion_mode(uint8_t mode){
 
 }

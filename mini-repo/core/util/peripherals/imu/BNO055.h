@@ -73,10 +73,10 @@ public:
 
 protected:
 
-    I2C *_i2c_p;
-    I2C &_i2c;
-    DigitalOut _res;   // working buffer
-    uint8_t  chip_addr;
+    I2C *_i2c_p; // Pointer to an I2C object
+    I2C &_i2c; // Reference to an I2C object
+    DigitalOut _res;   // working buffer, reset pin control
+    uint8_t  chip_addr; //I2C chip address of the BNO055 to ping
     int cantReadDataCount;    
     
 private:
