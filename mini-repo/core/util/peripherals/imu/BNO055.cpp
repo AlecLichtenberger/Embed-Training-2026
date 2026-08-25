@@ -1,4 +1,5 @@
 #include "BNO055.h"
+//Add constants for magic number addresses later
 
 
 /*
@@ -71,7 +72,7 @@ BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), ch
 void BNO055::init() noexcept{
     _i2c.frequency(100); //Magic number of the recommended 100khz for now
 
-    //Change operateion mode to 9DOF/NDOF mode
+    //Change operation mode to 9DOF/NDOF mode
     change_fusion_mode(0x0C);
 }
 
@@ -184,9 +185,30 @@ void BNO055::change_fusion_mode(uint8_t mode){
 }
 
 
-//What is difference?
-IMU::EulerAngles BNO055::read(){
 
+IMU::EulerAngles BNO055::read(){
+    char writeArr [1] = {0x1A};
+    int writeResult = _i2c.write(chip_addr, writeArr, 1, false);
+    _i2c.read(chip_addr, dt, 6, true);
+
+    IMU::EulerAngles angles;
+
+    int x_LSB = dt[0];
+    int x_MSB = dt[1];
+    int y_LSB = dt[2];
+    int y_MSB = dt[3];
+    int z_LSB = dt[4];
+    int z_MSB = dt[5];
+
+    uint16_t euler_Roll = (x_MSB << 8) | x_LSB;
+    uint16_t euler_Pitch = (y_MSB << 8) | y_LSB;
+    uint16_t euler_Yaw = (z_MSB << 8) | z_LSB;
+
+    angles.roll = euler_Roll;
+    angles.pitch = euler_Pitch;
+    angles.yaw = euler_Yaw;
+
+    return angles;
 }
 
 IMU::EulerAngles BNO055::getImuAngles(){
