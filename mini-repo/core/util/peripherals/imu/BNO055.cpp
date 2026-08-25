@@ -70,6 +70,9 @@ BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), ch
  */
 void BNO055::init() noexcept{
     _i2c.frequency(100); //Magic number of the recommended 100khz for now
+
+    //Change operateion mode to 9DOF/NDOF mode
+    change_fusion_mode(0x0C);
 }
 
 /**
@@ -169,12 +172,15 @@ void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
     }
 }
 
-/** Change to 9DOF fusion mode
+/** Change fusion mode
 * @param mode fusion mode
 * @return none
 */
 void BNO055::change_fusion_mode(uint8_t mode){
-
+    // Create write Arr with the operator mode and the new mode address
+    char writeArr[2] = {0x3D, (char)mode};
+    //Write command
+    int changeMode = _i2c.write(chip_addr, writeArr, 1, false);
 }
 
 IMU::EulerAngles BNO055::read(){
