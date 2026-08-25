@@ -114,7 +114,27 @@ void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
  * @param gr pointer to the x,y,z of the imu
  */
 void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
+    char writeArr [1] = {0x0E};
+    _i2c.write(chip_addr, writeArr, 1, false);
+    _i2c.read(0x51, dt, 6, true); // Reads the contents of the accel registers into dt
 
+    //Move contents of dt into the Vector Type Def struct via the given pointer to the struct
+    int x_LSB = dt[0];
+    int x_MSB = dt[1];
+    int y_LSB = dt[2];
+    int y_MSB = dt[3];
+    int z_LSB = dt[4];
+    int z_MSB = dt[5];
+
+    //bit shifting
+    uint16_t accel_X = (x_MSB << 8) | x_LSB;
+    uint16_t accel_Y = (y_MSB << 8) | y_LSB;
+    uint16_t accel_Z = (z_MSB << 8) | z_LSB;
+
+    //Load into the passed struct
+    gr-> x = accel_X;
+    gr-> y = accel_Y;
+    gr-> z = accel_Z;
 }
 
 /** Change to 9DOF fusion mode
