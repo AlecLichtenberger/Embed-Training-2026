@@ -91,7 +91,6 @@ void BNO055::reset() noexcept{
  * @param la pointer to the x,y,z of the imu
  */
 void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
-    //Implement math to calculate acceleration
     char writeArr [1] = {0x08};
     _i2c.write(chip_addr, writeArr, 1, false);
     _i2c.read(0x51, dt, 6, true); // Reads the contents of the accel registers into dt
