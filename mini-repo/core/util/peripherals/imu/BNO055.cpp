@@ -85,17 +85,17 @@ void BNO055::reset() noexcept{
  * @param la pointer to the x,y,z of the imu
  */
 void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
-    if (cantReadDataCount > 0 && cantReadDataCount < 50) {
+    if (cantReadDataCount > 0 && cantReadDataCount < 50){
         cantReadDataCount++;
         return;
-    } else if (cantReadDataCount >= 50) {
+    } else if (cantReadDataCount >= 50){
         cantReadDataCount = 1;
     }
     char writeArr [1] = {0x08};
     int writeResult = _i2c.write(chip_addr, writeArr, 1, false);
     
-    if (!writeResult)  {
-        if (cantReadDataCount > 0) {
+    if (!writeResult){
+        if (cantReadDataCount > 0){
             printf("RESET IMU\n");
             reset();
             cantReadDataCount = 0;
@@ -116,9 +116,10 @@ void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
         uint16_t accel_Z = (z_MSB << 8) | z_LSB;
 
         //Load into the passed struct
-        la-> x = accel_X;
-        la-> y = accel_Y;
-        la-> z = accel_Z;
+        la-> x = (double)accel_X;
+        la-> y = (double)accel_Y;
+        la-> z = (double)accel_Z;
+    } else{
         cantReadDataCount++;
     }
 }
@@ -129,27 +130,43 @@ void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
  * @param gr pointer to the x,y,z of the imu
  */
 void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
+    if (cantReadDataCount > 0 && cantReadDataCount < 50){
+        cantReadDataCount++;
+        return;
+    } else if (cantReadDataCount >= 50){
+        cantReadDataCount = 1;
+    }
     char writeArr [1] = {0x0E};
     int writeResult = _i2c.write(chip_addr, writeArr, 1, false);
-    _i2c.read(chip_addr, dt, 6, true); // Reads the contents of the accel registers into dt
+    if (!writeResult){
+        if (cantReadDataCount > 0){
+            printf("RESET IMU\n");
+            reset();
+            cantReadDataCount = 0;
+        }
+        _i2c.read(chip_addr, dt, 6, true); // Reads the contents of the gyro registers into dt
+        
+        //Move contents of dt into the Vector Type Def struct via the given pointer to the struct
+        int x_LSB = dt[0];
+        int x_MSB = dt[1];
+        int y_LSB = dt[2];
+        int y_MSB = dt[3];
+        int z_LSB = dt[4];
+        int z_MSB = dt[5];
+        
+        //bit shifting
+        uint16_t gyro_X = (x_MSB << 8) | x_LSB;
+        uint16_t gyro_Y = (y_MSB << 8) | y_LSB;
+        uint16_t gyro_Z = (z_MSB << 8) | z_LSB;
 
-    //Move contents of dt into the Vector Type Def struct via the given pointer to the struct
-    int x_LSB = dt[0];
-    int x_MSB = dt[1];
-    int y_LSB = dt[2];
-    int y_MSB = dt[3];
-    int z_LSB = dt[4];
-    int z_MSB = dt[5];
-
-    //bit shifting
-    uint16_t gyro_X = (x_MSB << 8) | x_LSB;
-    uint16_t gyro_Y = (y_MSB << 8) | y_LSB;
-    uint16_t gyro_Z = (z_MSB << 8) | z_LSB;
-
-    //Load into the passed struct
-    gr-> x = gyro_X;
-    gr-> y = gyro_Y;
-    gr-> z = gyro_Z;
+        //Load into the passed struct
+        gr-> x = (double)gyro_X;
+        gr-> y = (double)gyro_Y;
+        gr-> z = (double)gyro_Z;
+        
+    } else{
+        cantReadDataCount++;
+    }
 }
 
 /** Change to 9DOF fusion mode
