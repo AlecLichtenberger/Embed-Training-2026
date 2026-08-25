@@ -127,14 +127,14 @@ void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
     int z_MSB = dt[5];
 
     //bit shifting
-    uint16_t accel_X = (x_MSB << 8) | x_LSB;
-    uint16_t accel_Y = (y_MSB << 8) | y_LSB;
-    uint16_t accel_Z = (z_MSB << 8) | z_LSB;
+    uint16_t gyro_X = (x_MSB << 8) | x_LSB;
+    uint16_t gyro_Y = (y_MSB << 8) | y_LSB;
+    uint16_t gyro_Z = (z_MSB << 8) | z_LSB;
 
     //Load into the passed struct
-    gr-> x = accel_X;
-    gr-> y = accel_Y;
-    gr-> z = accel_Z;
+    gr-> x = gyro_X;
+    gr-> y = gyro_Y;
+    gr-> z = gyro_Z;
 }
 
 /** Change to 9DOF fusion mode
