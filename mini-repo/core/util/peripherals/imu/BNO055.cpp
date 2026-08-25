@@ -60,12 +60,14 @@ BNO055::BNO055(I2C &i2c, uint8_t addr) noexcept : _i2c(i2c), chip_addr(addr){
     IMU::EulerAngles imuAngles;
     cantReadDataCount = 0;
     _i2c_p = &i2c;
+    BNO055_VECTOR_TypeDef imuVector;
 }
 
-BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), chip_addr(addr), _res(p_reset){ //Not sure if this extra parameter works?
+BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), chip_addr(addr), _res(p_reset){ //Not sure if this extra parameter is inited properly?
     IMU::EulerAngles imuAngles;
     cantReadDataCount = 0;
     _i2c_p = &i2c;
+    BNO055_VECTOR_TypeDef imuVector;
 } 
 
 //Function Implementations
@@ -74,7 +76,7 @@ BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), ch
  * Initialize the BNO055
  */
 void BNO055::init() noexcept{
-
+    _i2c.frequency(100); //Magic number of the recommended 100khz for now
 }
 
 /**
@@ -90,6 +92,14 @@ void BNO055::reset() noexcept{
  */
 void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
     //Implement math to calculate acceleration
+    char writeArr [1] = {0x08};
+    _i2c.write(chip_addr, writeArr, 1, false);
+    _i2c.read(0x51, dt, 6, true); // Reads the contents of the accel registers into dt
+
+    //Move contents of dt into the Vector Type Def struct via the given pointer to the struct
+
+
+    
 }
 
 /**
@@ -100,8 +110,8 @@ void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
 
 }
 
-/** Change fusion mode
-* @param fusion mode
+/** Change to 9DOF fusion mode
+* @param mode fusion mode
 * @return none
 */
 void BNO055::change_fusion_mode(uint8_t mode){
