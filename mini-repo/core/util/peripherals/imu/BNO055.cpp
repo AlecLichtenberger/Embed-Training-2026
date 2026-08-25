@@ -96,9 +96,20 @@ void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
     _i2c.read(0x51, dt, 6, true); // Reads the contents of the accel registers into dt
 
     //Move contents of dt into the Vector Type Def struct via the given pointer to the struct
+    int x_LSB = dt[0];
+    int x_MSB = dt[1];
+    int y_LSB = dt[2];
+    int y_MSB = dt[3];
+    int z_LSB = dt[4];
+    int z_MSB = dt[5];
+    //bit shifting?
+    uint16_t accel_X = (x_MSB << 8) | x_LSB;
+    uint16_t accel_Y = (y_MSB << 8) | y_LSB;
+    uint16_t accel_Z = (z_MSB << 8) | z_LSB;
 
-
-    
+    la-> x = accel_X;
+    la-> y = accel_Y;
+    la-> z = accel_Z;
 }
 
 /**
