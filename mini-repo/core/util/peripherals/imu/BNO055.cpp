@@ -183,6 +183,8 @@ void BNO055::change_fusion_mode(uint8_t mode){
     int changeMode = _i2c.write(chip_addr, writeArr, 1, false);
 }
 
+
+//What is difference?
 IMU::EulerAngles BNO055::read(){
 
 }
