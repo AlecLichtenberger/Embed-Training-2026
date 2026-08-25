@@ -56,13 +56,6 @@ void BNO055::get_angular_position_quat(IMU::EulerAngles *result){
 
 
 //Constructors
-BNO055::BNO055(I2C &i2c, uint8_t addr) noexcept : _i2c(i2c), chip_addr(addr){
-    IMU::EulerAngles imuAngles;
-    cantReadDataCount = 0;
-    _i2c_p = &i2c;
-    BNO055_VECTOR_TypeDef imuVector;
-}
-
 BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), chip_addr(addr), _res(p_reset){ //Not sure if this extra parameter is inited properly?
     IMU::EulerAngles imuAngles;
     cantReadDataCount = 0;
@@ -87,7 +80,8 @@ void BNO055::reset() noexcept{
 }
 
 /**
- * Get acceleration of the BNO055, through math?
+ * Get acceleration of the BNO055, through I2C
+ * then parse and pass it to the struct
  * @param la pointer to the x,y,z of the imu
  */
 void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
@@ -102,18 +96,21 @@ void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
     int y_MSB = dt[3];
     int z_LSB = dt[4];
     int z_MSB = dt[5];
-    //bit shifting?
+
+    //bit shifting
     uint16_t accel_X = (x_MSB << 8) | x_LSB;
     uint16_t accel_Y = (y_MSB << 8) | y_LSB;
     uint16_t accel_Z = (z_MSB << 8) | z_LSB;
 
+    //Load into the passed struct
     la-> x = accel_X;
     la-> y = accel_Y;
     la-> z = accel_Z;
 }
 
 /**
- * Get the gyro of the BNO055, through math?
+ * Get gyro of BNO055 using I2C comms and then pass to the struct 
+ * after parsing
  * @param gr pointer to the x,y,z of the imu
  */
 void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
