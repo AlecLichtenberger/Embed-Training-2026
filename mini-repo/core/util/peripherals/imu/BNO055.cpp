@@ -211,8 +211,11 @@ IMU::EulerAngles BNO055::read(){
     return angles;
 }
 
+/** Getter function for Euler Angles as read() can lead to funky stuff
+* @return The private imuAngles struct
+*/
 IMU::EulerAngles BNO055::getImuAngles(){
-
+    return imuAngles;
 }
 
 
