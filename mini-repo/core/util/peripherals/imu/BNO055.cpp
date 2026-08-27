@@ -1,6 +1,11 @@
 #include "BNO055.h"
+#include <cstdint>
 //Add constants for magic number addresses later
-
+constexpr uint8_t BNO055_NDOF = 0x0C;
+constexpr char BNO055_ACCEL = 0x08;
+constexpr char BNO055_GYRO = 0x0E;
+constexpr char BNO055_EULER = 0x1A;
+constexpr char OPR_MODE_REGISTER = 0x3D;
 
 /*
 We added these two functions since they're definitely beyond what we expect from you as recruits
@@ -73,7 +78,7 @@ void BNO055::init() noexcept{
     _i2c.frequency(100); //Magic number of the recommended 100khz for now
 
     //Change operation mode to 9DOF/NDOF mode
-    change_fusion_mode(0x0C);
+    change_fusion_mode(BNO055_NDOF);
 }
 
 /**
@@ -95,7 +100,7 @@ void BNO055::get_accel(BNO055_VECTOR_TypeDef *la){
     } else if (cantReadDataCount >= 50){
         cantReadDataCount = 1;
     }
-    char writeArr [1] = {0x08};
+    char writeArr [1] = {BNO055_ACCEL};
     int writeResult = _i2c.write(chip_addr, writeArr, 1, false);
     
     if (!writeResult){
@@ -140,7 +145,7 @@ void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
     } else if (cantReadDataCount >= 50){
         cantReadDataCount = 1;
     }
-    char writeArr [1] = {0x0E};
+    char writeArr [1] = {BNO055_GYRO};
     int writeResult = _i2c.write(chip_addr, writeArr, 1, false);
     if (!writeResult){
         if (cantReadDataCount > 0){
@@ -179,7 +184,7 @@ void BNO055::get_gyro(BNO055_VECTOR_TypeDef *gr){
 */
 void BNO055::change_fusion_mode(uint8_t mode){
     // Create write Arr with the operator mode and the new mode address
-    char writeArr[2] = {0x3D, (char)mode};
+    char writeArr[2] = {OPR_MODE_REGISTER, (char)mode};
     //Write command
     int changeMode = _i2c.write(chip_addr, writeArr, 1, false);
 }
@@ -187,7 +192,7 @@ void BNO055::change_fusion_mode(uint8_t mode){
 
 
 IMU::EulerAngles BNO055::read(){
-    char writeArr [1] = {0x1A};
+    char writeArr [1] = {BNO055_EULER};
     int writeResult = _i2c.write(chip_addr, writeArr, 1, false);
     _i2c.read(chip_addr, dt, 6, true);
 
