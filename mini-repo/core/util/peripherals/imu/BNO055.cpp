@@ -191,8 +191,6 @@ IMU::EulerAngles BNO055::read(){
     int writeResult = _i2c.write(chip_addr, writeArr, 1, false);
     _i2c.read(chip_addr, dt, 6, true);
 
-    IMU::EulerAngles angles;
-
     int x_LSB = dt[0];
     int x_MSB = dt[1];
     int y_LSB = dt[2];
@@ -204,11 +202,11 @@ IMU::EulerAngles BNO055::read(){
     uint16_t euler_Pitch = (y_MSB << 8) | y_LSB;
     uint16_t euler_Yaw = (z_MSB << 8) | z_LSB;
 
-    angles.roll = euler_Roll;
-    angles.pitch = euler_Pitch;
-    angles.yaw = euler_Yaw;
+    imuAngles.roll = euler_Roll;
+    imuAngles.pitch = euler_Pitch;
+    imuAngles.yaw = euler_Yaw;
 
-    return angles;
+    return imuAngles;
 }
 
 /** Getter function for Euler Angles as read() can lead to funky stuff
