@@ -6,8 +6,10 @@ constexpr char BNO055_ACCEL = 0x08;
 constexpr char BNO055_GYRO = 0x0E;
 constexpr char BNO055_EULER = 0x1A;
 constexpr char OPR_MODE_REGISTER = 0x3D;
-#define PWR_MODE_REGISTER 0x3E
-#define SYS_TRIGGER_REGISTER 0x3F
+constexpr char PWR_MODE_REGISTER = 0x3E;
+constexpr char PWR_MODE_NORMAL = 0x00;
+constexpr char SYS_TRIGGER_REGISTER = 0x3F;
+constexpr char SYS_TRIGGER_RESET = 0x20;
 
 /*
 We added these two functions since they're definitely beyond what we expect from you as recruits
@@ -78,7 +80,7 @@ BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), ch
  */
 void BNO055::init() noexcept{
     _i2c.frequency(100); //Magic number of the recommended 100khz for now
-    char writeArr[2] = {PWR_MODE_REGISTER, 0x00}; // Set to normal power mode
+    char writeArr[2] = {PWR_MODE_REGISTER, PW}; // Set to normal power mode
     int writeResult = _i2c.write(chip_addr, writeArr, 1, true);
 
     //Change operation mode to 9DOF/NDOF mode
@@ -89,7 +91,9 @@ void BNO055::init() noexcept{
  * Reset the BNO055
  */
 void BNO055::reset() noexcept{
-
+    char writeArr[2] = {SYS_TRIGGER_REGISTER, SYS_TRIGGER_RESET};
+    int writeResult = _i2c.write(chip_addr, writeArr, 1, true);
+    
 }
 
 /**
