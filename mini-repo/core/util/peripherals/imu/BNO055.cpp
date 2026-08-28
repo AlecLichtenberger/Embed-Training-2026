@@ -1,6 +1,6 @@
 #include "BNO055.h"
 #include <cstdint>
-//Add constants for magic number addresses later
+//Constants for register addresses
 constexpr uint8_t BNO055_NDOF = 0x0C;
 constexpr char BNO055_ACCEL = 0x08;
 constexpr char BNO055_GYRO = 0x0E;
@@ -80,7 +80,7 @@ BNO055::BNO055(I2C &i2c, uint8_t addr, PinName p_reset) noexcept : _i2c(i2c), ch
  */
 void BNO055::init() noexcept{
     _i2c.frequency(100); //Magic number of the recommended 100khz for now
-    char writeArr[2] = {PWR_MODE_REGISTER, PW}; // Set to normal power mode
+    char writeArr[2] = {PWR_MODE_REGISTER, PWR_MODE_NORMAL}; // Set to normal power mode
     int writeResult = _i2c.write(chip_addr, writeArr, 1, true);
 
     //Change operation mode to 9DOF/NDOF mode
@@ -91,6 +91,7 @@ void BNO055::init() noexcept{
  * Reset the BNO055
  */
 void BNO055::reset() noexcept{
+    //Write to trigger register to cause reset
     char writeArr[2] = {SYS_TRIGGER_REGISTER, SYS_TRIGGER_RESET};
     int writeResult = _i2c.write(chip_addr, writeArr, 1, true);
     
