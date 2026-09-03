@@ -199,8 +199,14 @@ class Infantry : public BaseRobot {
 
         // Chassis logic
         // TODO: ADD THE CHASSIS LOGIC HERE
-
-
+        DJIRemote2::ModeSwitch mode = remote_.getMode();
+        if(mode == DJIRemote2::ModeSwitch::MODE_N){
+            chassis_.setChassisSpeeds(des_chassis_state,ChassisSubsystem::ROBOT_ORIENTED);
+        }
+        else{
+            WheelSpeeds neutral = {0,0,0,0};//neutral wheel speeds
+            chassis_.setWheelSpeeds(neutral);
+        }
 
         // Shooter Logic 
         // //REMOVED remote_.PAUSEToggled() == true && FROM THE FIRST CONDITION
