@@ -186,13 +186,17 @@ class Infantry : public BaseRobot {
         // Turret from remote
         // TODO: IMPLEMENT TURRET LOGIC HERE (Hint: update desired pitch and yaw from remote readings)
         // yaw_desired_angle = ?
-
-
-
+        yaw_desired_angle -= myaw * 0.01;
+        yaw_desired_angle -= jyaw * JOYSTICK_YAW_SENSITIVITY_DPS * dt_us / 1000000.0;
+        yaw_desired_angle = capAngle(yaw_desired_angle);
+        des_turret_state.yaw_angle_degs = yaw_desired_angle;
 
         // pitch_desired_angle = ?
 
-
+        pitch_desired_angle -= mpitch * 0.01;
+        pitch_desired_angle -= jpitch * JOYSTICK_PITCH_SENSITIVITY_DPS * dt_us / 1000000.0;
+        pitch_desired_angle = std::clamp(pitch_desired_angle, PITCH_LOWER_BOUND, PITCH_UPPER_BOUND);
+        des_turret_state.pitch_angle_degs = pitch_desired_angle;
 
 
 
@@ -212,7 +216,7 @@ class Infantry : public BaseRobot {
             WheelSpeeds neutral = {0,0,0,0};//neutral wheel speeds
             chassis_.setWheelSpeeds(neutral);
             chassis_.setWheelPower({0,0,0,0});
-            
+
         }
 
         // Shooter Logic 
