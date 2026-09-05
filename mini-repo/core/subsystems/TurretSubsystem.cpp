@@ -98,7 +98,8 @@ void TurretSubsystem::periodic(float chassisRpm)
     // TODO: What do you think the motors should be doing during sleep mode? 
     if (turret_state.turret_mode == SLEEP)
     {
-      
+        TurretSubsystem::TurretInfo sleepState = {0,0,0,0,SLEEP};
+        setState(sleepState);
     }
     else if (turret_state.turret_mode == AIM) 
     {
@@ -109,6 +110,11 @@ void TurretSubsystem::periodic(float chassisRpm)
             turret_time = us_ticker_read();
             
             //TODO: What should the motors be doing?
+            turret_state.yaw_velo_rad_s = 0;
+            turret_state.pitch_velo_rad_s = 0;
+            turret_state.yaw_angle_degs = 0;
+            turret_state.pitch_angle_degs = 0;
+            setState(turret_state);
 
             // Week 4/5 TODO: what should the PIDs do if we get a NAN? 
 
@@ -116,8 +122,8 @@ void TurretSubsystem::periodic(float chassisRpm)
         }
 
         int dir = 0; // TODO: What's the optimal way to turn if we have to increase our yaw or decrease our yaw? HINT: Set dir either to 1 or -1  
-        if      (deltaYaw >  0.0f) dir = 0;
-        else if (deltaYaw <  0.0f) dir = 0;
+        if      (deltaYaw >  0.0f) dir = 1;
+        else if (deltaYaw <  0.0f) dir = -1;
         
         yaw.pidPosition.feedForward = -chassis_rpm * 2 * PI / 60;
 
@@ -134,7 +140,7 @@ void TurretSubsystem::periodic(float chassisRpm)
         // printf("yp %.2f | %.2f\n", des_yaw_power, deltaYaw);
         
         // TODO: What's going on above? What should we be doing with the yaw motor here?
-        
+        yaw.setPower(des_yaw_power);
 
 
         // Pitch calc

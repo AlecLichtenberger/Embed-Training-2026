@@ -199,13 +199,20 @@ class Infantry : public BaseRobot {
 
         // Chassis logic
         // TODO: ADD THE CHASSIS LOGIC HERE
+        des_chassis_state.vX = max_linear_vel * jy;
+        des_chassis_state.vY = max_linear_vel * jx;
+        
         DJIRemote2::ModeSwitch mode = remote_.getMode();
         if(mode == DJIRemote2::ModeSwitch::MODE_N){
-            chassis_.setChassisSpeeds(des_chassis_state,ChassisSubsystem::ROBOT_ORIENTED);
+            des_chassis_state.vOmega = 0;
+            chassis_.setChassisSpeeds(des_chassis_state,ChassisSubsystem::DRIVE_MODE::ROBOT_ORIENTED);
+            des_turret_state.turret_mode = TurretState::AIM;
         }
         else{
             WheelSpeeds neutral = {0,0,0,0};//neutral wheel speeds
             chassis_.setWheelSpeeds(neutral);
+            chassis_.setWheelPower({0,0,0,0});
+            
         }
 
         // Shooter Logic 

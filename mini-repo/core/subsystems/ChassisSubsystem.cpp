@@ -65,7 +65,7 @@ void ChassisSubsystem::setWheelSpeeds(WheelSpeeds wheelSpeeds)
 
 }
 
-/Added the wheel power like preston did
+//Added the wheel power like preston did
 void ChassisSubsystem::setWheelPower(WheelSpeeds wheelPower)
 {   
     LF.setPower(wheelPower.LF);
