@@ -98,8 +98,9 @@ void TurretSubsystem::periodic(float chassisRpm)
     // TODO: What do you think the motors should be doing during sleep mode? 
     if (turret_state.turret_mode == SLEEP)
     {
-        TurretSubsystem::TurretInfo sleepState = {0,0,0,0,SLEEP};
-        setState(sleepState);
+        yaw.setPower(0);
+        pitch.setPower(0);
+        
     }
     else if (turret_state.turret_mode == AIM) 
     {
@@ -110,11 +111,9 @@ void TurretSubsystem::periodic(float chassisRpm)
             turret_time = us_ticker_read();
             
             //TODO: What should the motors be doing?
-            turret_state.yaw_velo_rad_s = 0;
-            turret_state.pitch_velo_rad_s = 0;
-            turret_state.yaw_angle_degs = 0;
-            turret_state.pitch_angle_degs = 0;
-            setState(turret_state);
+            yaw.setPower(0);
+            pitch.setPower(0);
+            
 
             // Week 4/5 TODO: what should the PIDs do if we get a NAN? 
 

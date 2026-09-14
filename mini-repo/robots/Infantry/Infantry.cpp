@@ -211,10 +211,10 @@ class Infantry : public BaseRobot {
             des_chassis_state.vOmega = 0;
             chassis_.setChassisSpeeds(des_chassis_state,ChassisSubsystem::DRIVE_MODE::ROBOT_ORIENTED);
             des_turret_state.turret_mode = TurretState::AIM;
+            
         }
         else{
-            WheelSpeeds neutral = {0,0,0,0};//neutral wheel speeds
-            chassis_.setWheelSpeeds(neutral);
+
             chassis_.setWheelPower({0,0,0,0});
 
         }
