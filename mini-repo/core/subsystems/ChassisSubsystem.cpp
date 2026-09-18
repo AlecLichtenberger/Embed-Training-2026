@@ -79,12 +79,22 @@ void ChassisSubsystem::setChassisSpeeds(ChassisSpeeds desiredChassisSpeeds_, DRI
     double yawCurrent = 0;
     if (mode == YAW_ORIENTED)
     {   //TODO: Figure this out 
-
+        
+        desiredChassisSpeeds_.vX = desiredChassisSpeeds_.vX * cos(yawCurrent) - desiredChassisSpeeds_.vY * sin(yawCurrent);
+        desiredChassisSpeeds_.vY = desiredChassisSpeeds_.vX * sin(yawCurrent) + desiredChassisSpeeds_.vY * cos(yawCurrent);
+        
         // Consider the following: Updating Yaw Current
-
+        yawCurrent = encoder->getEncoderYawPosition();
         // Account for rollover at 360 degrees
-
+        if (yawCurrent < 0.0) {
+            yawCurrent += 360.0;
+        }
+        else if (yawCurrent > 360.0) {
+            yawCurrent -= 360.0;
+        }
+        
         // remember your rotate ChassisSpeeds
+        desiredChassisSpeeds_ = rotateChassisSpeed(desiredChassisSpeeds_, yawCurrent);
     }
     else if (mode == ROBOT_ORIENTED)
     {
