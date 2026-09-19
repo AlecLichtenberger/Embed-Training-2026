@@ -213,7 +213,7 @@ class Infantry : public BaseRobot {
             des_turret_state.turret_mode = TurretState::AIM;
             
         }
-        else if (mode == DJIRemote2::ModeSwitch::MODE_C){
+        else if (mode == DJIRemote2::ModeSwitch::MODE_S){
             des_chassis_state.vOmega = 0;
             chassis_.setChassisSpeeds(des_chassis_state,ChassisSubsystem::DRIVE_MODE::YAW_ORIENTED);
             des_turret_state.turret_mode = TurretState::AIM;
